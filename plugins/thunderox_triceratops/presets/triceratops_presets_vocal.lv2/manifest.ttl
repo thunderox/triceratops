@@ -1,0 +1,49 @@
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix pset: <http://lv2plug.in/ns/ext/presets#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix state: <http://lv2plug.in/ns/ext/state#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+					
+#----------------------------------------------------------------------------------------------
+# VOCAL
+
+<Evil_Whispers.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Evil_Whispers.ttl> .
+	
+<Formant.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Formant.ttl> .
+	
+<Heeeey.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Heeeey.ttl> .
+	
+<Jarresque.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Jarresque.ttl> .
+	
+<Nervous_In_A_Cavern.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Nervous_In_A_Cavern.ttl> .	
+	
+<Singer.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Singer.ttl> .
+	
+<Yaaaah.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Yaaaah.ttl> .
+	
+
+	

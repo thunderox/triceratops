@@ -1,0 +1,120 @@
+
+#include "delirium_ui.hpp"
+#include <sstream>
+#include<bits/stdc++.h> 
+
+//-------------------------------------------------------------------------------------------
+
+
+void Delirium_UI_Widget_Selector::Draw(cairo_t* cr)
+{
+	if (integer) values[current_value] = int(values[current_value]);
+	Convert_Scaled_To_Value();
+
+	float x = x_position * x_grid_size;
+	float y = y_position * y_grid_size;
+	float w = width * x_grid_size;
+	float h = height * y_grid_size;
+
+	cairo_set_source_rgb(cr, 0.2,0,0);
+	cairo_rectangle(cr, x, y, w, h);
+	cairo_fill(cr);
+
+	cairo_set_source_rgb(cr, 0.1,0,0);
+	cairo_set_line_width(cr, 2);	
+
+	if (toggle_mode)
+	{
+		cairo_rectangle(cr, x, y, w, h);
+		cairo_fill(cr);
+
+		cairo_set_source_rgb(cr, 0,0,0);
+		for (int wv=0; wv<6; wv++)
+		{
+			cairo_move_to(cr, x,font_size+32+y+(wv*30));
+			cairo_line_to(cr,  x+w,font_size+32+y+(wv*30));
+			cairo_stroke(cr);
+		}
+
+		cairo_set_source_rgb(cr, 0.5,0.5,0.5);
+		int wx = x+5;
+		int wy = y+font_size;
+		cairo_move_to(cr, wx,wy+25);
+		cairo_line_to(cr, wx+(w-10),wy+5);
+		cairo_stroke(cr);
+
+		wy+=30;
+		cairo_move_to(cr, wx,wy+25);
+		cairo_line_to(cr, wx,wy+5);
+		cairo_line_to(cr, wx+(w/2),wy+5);
+		cairo_line_to(cr, wx+(w/2),wy+25);
+		cairo_line_to(cr, wx+w-5,wy+25);
+		cairo_stroke(cr);
+
+		wy+=30;
+		cairo_move_to(cr,wx,wy+15);
+		for (int xpos=0; xpos<w-10; xpos++)
+		{
+			cairo_line_to(cr, wx+xpos, wy+15);
+		}
+		cairo_stroke(cr);
+
+	}
+	else
+	{
+		cairo_rectangle(cr, x, y, w, font_size+32);
+		cairo_fill(cr);
+	}
+
+
+	// DRAW LABEL
+
+
+	cairo_set_source_rgb(cr, 0,0,0);
+	cairo_rectangle(cr, x, y, w,font_size);
+	cairo_fill(cr);
+
+	if (hover) {
+		cairo_set_source_rgba(cr, 1, 1, 1, 1);
+	} else {
+		cairo_set_source_rgba(cr, 1, 1, 1, 0.6);
+
+	}
+
+
+	cairo_text_extents_t extents;
+	cairo_set_font_size(cr, font_size);
+	float x_text_centred; 
+	cairo_text_extents(cr, label.c_str(), &extents);
+	x_text_centred = (x + w / 2) - extents.width / 2;
+	cairo_move_to(cr,x_text_centred, y+font_size);
+	cairo_show_text(cr, label.c_str());
+
+}
+
+//-------------------------------------------------------------------------------------------
+
+void Delirium_UI_Widget_Selector::Left_Button_Press(int xm, int ym)
+{
+
+	float x = x_position * x_grid_size;
+	float y = y_position * y_grid_size;
+	float w = width * x_grid_size;
+	float h = height * y_grid_size;
+		
+	if (ym > y && ym < y+font_size+32)
+	{
+		toggle_mode = 1 - toggle_mode;
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+// MOUSE OVER
+
+void Delirium_UI_Widget_Selector::Mouse_Over(int xm, int ym)
+{
+}
+
+
+
+

@@ -1,0 +1,18 @@
+@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
+
+
+<http://thunderox.com/thunderox_triceratops>
+    a lv2:Plugin ;
+    lv2:binary <thunderox_triceratops_dsp.so> ;
+    rdfs:seeAlso <thunderox_triceratops_dsp.ttl> .
+
+<http://thunderox.com/thunderox_triceratops#UI>
+    a ui:X11UI ;
+    ui:binary <thunderox_triceratops_ui.so> ;
+    rdfs:seeAlso <thunderox_triceratops_ui.ttl> .
+
+
+
