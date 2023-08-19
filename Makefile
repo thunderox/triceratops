@@ -43,6 +43,7 @@ clean:
 	rm -rf bin build
 	rm -f delirium_ui/*.d
 	rm -f delirium_ui/*.o
+	find -name "*~" -delete
 
 # --------------------------------------------------------------
 install:
