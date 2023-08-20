@@ -20,6 +20,11 @@
 	a pset:Preset ;
 	rdfs:seeAlso <Classic_Analogue_Pad.ttl> .
 	
+<CZ_Pad.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <CZ_Pad.ttl> .
+	
 <Eno.ttl>
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
 	a pset:Preset ;
@@ -29,6 +34,12 @@
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
 	a pset:Preset ;
 	rdfs:seeAlso <Glassy.ttl> .
+	
+<Mindfulness.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Mindfulness.ttl> .
+
 	
 <Orange_Pad.ttl>
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;

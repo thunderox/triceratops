@@ -31,6 +31,11 @@
 	a pset:Preset ;
 	rdfs:seeAlso <Grossriser.ttl> .
 	
+<Radio_Workshop_1.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Radio_Workshop_1.ttl> .
+	
 <Weird_Inharmonic_EPiano.ttl>
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
 	a pset:Preset ;

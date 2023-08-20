@@ -16,6 +16,11 @@
 	a pset:Preset ;
 	rdfs:seeAlso <Clav_2.ttl> .
 	
+<Nicks_Electric_Piano.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Nicks_Electric_Piano.ttl> .
+	
 <Pulse_EPiano.ttl>
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
 	a pset:Preset ;
@@ -25,4 +30,15 @@
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
 	a pset:Preset ;
 	rdfs:seeAlso <Selected_Ambient_Piano.ttl> .
+	
+<Synth_Clav.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synth_Clav.ttl> .
+	
+<Synth_Jazz.ttl>
+	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synth_Jazz.ttl> .
+
 
