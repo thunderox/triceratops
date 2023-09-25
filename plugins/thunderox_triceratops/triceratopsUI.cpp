@@ -1149,7 +1149,7 @@ class triceratopsUI : public UI
 					
 					if (symbol_index > -1) 
 					{
-						// /*
+						/*
 					
 						if (symbol_index >= 36 && symbol_index <=40 ) 
 						 {
@@ -1166,7 +1166,7 @@ class triceratopsUI : public UI
 						 	preset_value = 1 - preset_value;
 						 }
 						 
-						 // */
+						 */
 						 
 						parameterChanged(symbol_index, preset_value);
 						 
