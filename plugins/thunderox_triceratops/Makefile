@@ -68,6 +68,7 @@ TARGETS += lv2_dsp
 endif
 
 TARGETS += vst
+TARGETS += dssi
 
 all: $(TARGETS)
 

@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <cstdint>
 #include "fastmaths.hpp"
 #include "lfo.h"
 #include "eq.h"

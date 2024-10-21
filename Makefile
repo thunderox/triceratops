@@ -48,7 +48,7 @@ clean:
 # --------------------------------------------------------------
 install:
 	mkdir ~/.config/thunderox/triceratops -p
-	chmod 777 ~/.config/triceratops -R
+	chmod 777 ~/.config/thunderox/triceratops -R
 	cp $(CURDIR)/bin/thunderox_triceratops.lv2 /usr/lib/lv2 -r
 	cp $(CURDIR)/plugins/thunderox_triceratops/presets/triceratops_presets_bass.lv2 /usr/lib/lv2 -r
 	cp $(CURDIR)/plugins/thunderox_triceratops/presets/triceratops_presets_brass.lv2 /usr/lib/lv2 -r

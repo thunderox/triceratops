@@ -818,15 +818,11 @@ class triceratopsUI : public UI
 					
 			widget_presets_list = Delirium_UI_Create_Widget(GUI, deliriumUI_List, 0, panelX + 8.5,panelY + 1.25, 10, 5, "PRESETS", -1);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_presets_list, "general", "presets");
-						
-				
-				
-
-
+								
 			loadSymbols();
 			searchPresets();
 					
-					
+			
 			//-----------------------------
 
 			GUI->draw_flag = true;					
@@ -848,22 +844,23 @@ class triceratopsUI : public UI
 		//------------------------------------------------------------------------------------------------------
 
 		vector<string> split (const string &s, char delim) {
-			    vector<string> result;
+			    vector <string> result;
 			    stringstream ss (s);
 			    string item;
 	
 			    while (getline (ss, item, delim)) {
 			        result.push_back (item);
 				    }
-
+		
 		    return result;
 		}
 		
 		//------------------------------------------------------------------------------------------------------
 		void loadSymbols()
 		{
-			string lv2_path = getenv("LV2_PATH");
 			string line;
+
+			string lv2_path = "/usr/lib/lv2"; // getenv("LV2_PATH");				
 			struct dirent *d;
 			struct stat st;
 			DIR *dr;
@@ -930,7 +927,7 @@ class triceratopsUI : public UI
 		
 		void searchPresets()
 		{
-			string lv2_path = getenv("LV2_PATH");
+			string lv2_path = "/usr/lib/lv2"; // getenv("LV2_PATH");			
 			stringstream ss;
 			struct dirent *d, *pr_d;
 			struct stat st;
