@@ -1,0 +1,47 @@
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix pset: <http://lv2plug.in/ns/ext/presets#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix state: <http://lv2plug.in/ns/ext/state#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<128_Growlie.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <128_Growlie.ttl> .
+	
+<Clang.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Clang.ttl> .
+	
+<First_Contact_Exo_Planet_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <First_Contact_Exo_Planet_2.ttl> .
+	
+<FM_Twangy.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <FM_Twangy.ttl> .
+	
+<Grossriser.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Grossriser.ttl> .
+	
+<Radio_Workshop_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Radio_Workshop_1.ttl> .
+	
+<Weird_Inharmonic_EPiano.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Weird_Inharmonic_EPiano.ttl> .
+	
+<Winds_Of_Mars.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Winds_Of_Mars.ttl> .
