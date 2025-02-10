@@ -678,7 +678,7 @@ class triceratopsUI : public UI
 			fParameters_widget_number[TRICERATOPS_FILTER_KEY_FOLLOW] = widget_filter_key_follow;
 			
 			int widget_master_tune = Delirium_UI_Create_Widget(GUI, deliriumUI_Fader, 0, panelX + 13.5, panelY + 1.25, 1, 5.25, "TUNE", TRICERATOPS_MASTER_TUNE);
-			Delirium_UI_Widget_Set_Min_Max(GUI, widget_master_tune, -7,7);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_master_tune, 7,-7);
 			Delirium_UI_Widget_Set_Value(GUI, widget_master_tune, 0);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_master_tune, "general", "vol_flt");
 			fParameters_widget_number[TRICERATOPS_MASTER_TUNE] = widget_master_tune;

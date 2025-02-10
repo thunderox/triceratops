@@ -202,7 +202,7 @@ class triceratopsPlugin : public Plugin
 					set_param (parameter, "TRICERATOPS_MASTER_VOLUME", index, 0.0f, 2.0f, 0.6f);
 					break;
 				case TRICERATOPS_MASTER_TUNE:
-					set_param (parameter, "TRICERATOPS_MASTER_TUNE", index, 7.0f, -7.0f, 0.0f);
+					set_param (parameter, "TRICERATOPS_MASTER_TUNE", index, -7.0f, 7.0f, 0.0f);
 					break;
 				case TRICERATOPS_AMP_DRIVE:
 					set_param (parameter, "TRICERATOPS_AMP_DRIVE", index, 0.0f, 1.0f, 0.0f);
