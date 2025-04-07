@@ -236,6 +236,9 @@ void Delirium_UI_Widget_Fader_Route::Mouse_Scroll(int xm, int ym, float delta)
 		if (route_number < 0) route_number = 14;
 		if (route_number > 14) route_number = 0;
 	}
+
+	double inc = increment;
+	if (fine_increment) inc *= 0.1;
 	
 	if (ym-wY > font_size)
 	{
@@ -243,13 +246,13 @@ void Delirium_UI_Widget_Fader_Route::Mouse_Scroll(int xm, int ym, float delta)
 		{
 			if (min < max)
 			{
-				values[current_value] -= delta * increment;
+				values[current_value] -= delta * inc;
 				if (values[current_value] < min) values[current_value] = min;
 				if (values[current_value] > max) values[current_value] = max;
 			}
 			else
 			{
-				values[current_value] += delta * increment;		
+				values[current_value] += delta * inc;		
 				if (values[current_value] > min) values[current_value] = min;
 				if (values[current_value] < max) values[current_value] = max;
 			}
@@ -258,13 +261,13 @@ void Delirium_UI_Widget_Fader_Route::Mouse_Scroll(int xm, int ym, float delta)
 		{
 			if (min < max)
 			{
-				values[current_value] += delta * increment;
+				values[current_value] += delta * inc;
 				if (values[current_value] < min) values[current_value] = min;
 				if (values[current_value] > max) values[current_value] = max;
 			}
 			else
 			{
-				values[current_value] -= delta * increment;		
+				values[current_value] -= delta * inc;		
 				if (values[current_value] > min) values[current_value] = min;
 				if (values[current_value] < max) values[current_value] = max;
 			}

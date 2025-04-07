@@ -43,6 +43,7 @@ void Delirium_UI_Widget_Base::Draw(cairo_t* cr)
 
 void Delirium_UI_Widget_Base::Left_Button_Press(int xm, int ym)
 {
+
 }
 
 //-------------------------------------------------------------------------------------------
@@ -65,17 +66,20 @@ void Delirium_UI_Widget_Base::Mouse_Over(int xm, int ym)
 void Delirium_UI_Widget_Base::Mouse_Scroll(int mx,int my, float delta)
 {
 
+	double inc = increment;
+	if (fine_increment) inc *= 0.1;
+
 	if (type != deliriumUI_Knob)
 	{
 		if (min < max)
 		{
-			values[current_value] -= delta * increment;
+			values[current_value] -= delta * inc;
 			if (values[current_value] < min) values[current_value] = min;
 			if (values[current_value] > max) values[current_value] = max;
 		}
 		else
 		{
-			values[current_value] += delta * increment;		
+			values[current_value] += delta * inc;		
 			if (values[current_value] > min) values[current_value] = min;
 			if (values[current_value] < max) values[current_value] = max;
 		}
@@ -84,7 +88,7 @@ void Delirium_UI_Widget_Base::Mouse_Scroll(int mx,int my, float delta)
 	{
 		if (min < max)
 		{
-			values[current_value] += (double)delta * (double)increment;
+			values[current_value] += (double)delta * (double)inc;
 			if (values[current_value] <= min) values[current_value] = min;
 			if (values[current_value] >= max) values[current_value] = max;
 			// cout << normalised_values[current_value] << endl;
@@ -92,7 +96,7 @@ void Delirium_UI_Widget_Base::Mouse_Scroll(int mx,int my, float delta)
 		}
 		else
 		{
-			values[current_value] -= (double)delta * (double)increment;		
+			values[current_value] -= (double)delta * (double)inc;		
 			if (values[current_value] >= min) values[current_value] = min;
 			if (values[current_value] <= max) values[current_value] = max;
 		}		

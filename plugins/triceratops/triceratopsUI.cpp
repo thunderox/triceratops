@@ -45,7 +45,7 @@ class triceratopsUI : public UI
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, osc_panel, "global", "");
 			
 			int widget_logo = Delirium_UI_Create_Widget(GUI, deliriumUI_Logo, 0, panelX + 13.5, panelY + 1.25, 3.5, 6, "", -1);
-			GUI->Widgets[widget_logo]->logo_image = cairo_image_surface_create_from_png ("/usr/lib/lv2/thunderox_triceratops.lv2/logo.png");
+			GUI->Widgets[widget_logo]->logo_image = cairo_image_surface_create_from_png ("/usr/lib/lv2/triceratops.lv2/logo.png");
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_logo, "global", "");
 						
 			// OSCILATOR NAVIGATION ONE TO THREE -----------------------------------------------------------------------
@@ -887,7 +887,7 @@ class triceratopsUI : public UI
 			for (int z=0; z<v.size(); z++)
 			{
 				triceratops_ttl_file_name.str("");
-				triceratops_ttl_file_name << v[z] << "/thunderox_triceratops.lv2/thunderox_triceratops_dsp.ttl";
+				triceratops_ttl_file_name << v[z] << "/triceratops.lv2/triceratops_dsp.ttl";
 
 
 				ifstream triceratops_ttl_file(triceratops_ttl_file_name.str().c_str(), ios::in);
@@ -948,28 +948,8 @@ class triceratopsUI : public UI
 			stringstream file_name_and_path;
 			stringstream path_name;
 			
-			/*
-		
-			ifstream categories_file("/usr/lib/lv2/thunderox_triceratops.lv2/triceratops_presets.lv2/categories.txt");
-			string line;
-		
-			int category_number = 0;
-			
-
-			while (getline(categories_file,line))
-			{
-				category new_category;
-				new_category.number = category_number++;
-				new_category.name = line;
-				categories.push_back(new_category);
-				Delirium_UI_Widget_List_Add_Item(GUI, widget_categories_list, line);
-			}  
-			categories_file.close();	
-
-			*/
-
-			// preset_category_file.open("test.txt");
-			vector<string> v = split (lv2_path, ':');
+			vector <string> preset_folders;
+			vector <string> v = split (lv2_path, ':');
 			    
 			for (int z=0; z<v.size(); z++)
 			{
@@ -980,9 +960,9 @@ class triceratopsUI : public UI
 					for( d=readdir(dr); d!=NULL; d=readdir(dr)) // List all files here
 					{
 						string file_name = d->d_name;
-							if (file_name == "thunderox_triceratops.lv2")
+							if (file_name == "triceratops.lv2")
 							{
-								file_name = "thunderox_triceratops.lv2/triceratops_presets.lv2";
+								file_name = "triceratops.lv2/triceratops_presets.lv2";
 							}
 							
 							if (stat(file_name.c_str(),&st)) // Look in each folder
@@ -1001,6 +981,12 @@ class triceratopsUI : public UI
 										int file_is_ttl = file_name_and_path.str().rfind(".ttl");
 										int file_is_manifest = file_name_and_path.str().rfind("manifest.ttl");
 										int file_is_triceratops = file_name_and_path.str().rfind("triceratops.ttl");
+										bool file_is_triceratops_preset_folder = ( file_name_and_path.str().substr(file_name_and_path.str().size() - 4) == ".lv2");
+
+										if (file_is_triceratops_preset_folder)
+										{
+											preset_folders.push_back(file_name_and_path.str());
+										}
 										
 										if (file_is_ttl > 0 && file_is_manifest < 0 && file_is_triceratops < 0)
 										{
@@ -1017,24 +1003,11 @@ class triceratopsUI : public UI
 													is_triceratops_preset = true;
 
 												}
-												
-												/*
-												
-												search_pos = line.rfind("preset_category");
-												if (search_pos > 0)
-												{
-													getline(preset_file,line); 
-													search_pos = line.rfind("pset:value");
-													istringstream value_str;
-													istringstream ( line.substr(search_pos + 11, line.length()+1)
-														) >> category_number;
-												}
-												
-												*/
 										
 											}
 																			
 											preset_file.close();
+
 											if (is_triceratops_preset)
 											{
 												preset new_preset;
@@ -1062,10 +1035,6 @@ class triceratopsUI : public UI
 													categories.push_back(new_category);																																					
 												}
 												
-												
-												
-												
-												// Find_Preset_Category(new_preset.file);
 											}	
 										}			
 								}
@@ -1075,16 +1044,84 @@ class triceratopsUI : public UI
 					}
 					closedir(dr);
 				}				
-			}		
+			}	
 
-			/*
 
-			for (int pr=0; pr<categories[0].presets.size(); pr++)
-			{			
-				Delirium_UI_Widget_List_Add_Item(GUI, widget_presets_list, categories[0].presets[pr].name);
+
+
+
+			for (int x=0; x<preset_folders.size(); x++)
+			{
+
+				dr = opendir( preset_folders[x].c_str() ); 
+
+				if (dr!=NULL)
+				{
+					for( d=readdir(dr); d!=NULL; d=readdir(dr)) // List all files here
+					{
+						bool is_triceratops_preset = false;
+
+						if (d->d_name != "." && d->d_name != "..")
+						{
+							is_triceratops_preset = true;
+							cout << preset_folders[x] << " - " << d->d_name << endl;
+						}
+	
+						ifstream preset_file( preset_folders[x] + "/" + d->d_name, ios::in);
+						string line;
+				
+						while (getline(preset_file,line))  
+						{
+							int search_pos = line.rfind("triceratops");
+							if (search_pos > 0)
+							{					
+								preset_file.close();
+
+								if (is_triceratops_preset)
+								{
+									preset new_preset;
+									new_preset.file =  preset_folders[x] + "/" + d->d_name;
+									string preset_name = d->d_name;
+									new_preset.name = preset_name.substr(0,preset_name.length()-4);
+									
+									string category_name = Find_Preset_Category(new_preset.file);
+									bool category_found = false;
+
+									
+									for (int x=0; x<categories.size(); x++)
+									{
+										if (categories[x].name == category_name)
+										{
+											categories[x].presets.push_back(new_preset);
+											category_found = true;
+										}
+									}
+									
+									if (!category_found)
+									{
+										category new_category;
+										new_category.name = category_name;
+										new_category.presets.push_back(new_preset);			
+										categories.push_back(new_category);																																					
+									}
+									
+								}	
+							}
+						}
+								
+
+					}
 			}
-			
-			*/
+		}
+
+
+
+
+
+
+
+
+	
 			
 			sort(categories.begin(),categories.end(),alphasort_category());
 			
@@ -1133,7 +1170,6 @@ class triceratopsUI : public UI
 
 			ifstream preset_file;
 	
-			cout << preset_path_and_file_name << endl;
 			preset_file.open(preset_path_and_file_name );
 
 			string preset_symbol;
@@ -1158,28 +1194,8 @@ class triceratopsUI : public UI
 					int symbol_index = getSymbolIndex(preset_symbol) - 3;
 					
 					if (symbol_index > -1) 
-					{
-						/*
-					
-						if (symbol_index >= 36 && symbol_index <=40 ) 
-						 {
-						 	preset_value = 1 - preset_value;
-						 }
-						 
-						if (symbol_index >= 44 && symbol_index <=47 ) 
-						 {
-						 	preset_value = 1 - preset_value;
-						 }
-						 
-						if (symbol_index >= 52 && symbol_index <=55 ) 
-						 {
-						 	preset_value = 1 - preset_value;
-						 }
-						 
-						 */
-						 
-						parameterChanged(symbol_index, preset_value);
-						 
+					{						 
+						parameterChanged(symbol_index, preset_value); 
 					}
 
 				} 
@@ -1321,7 +1337,18 @@ class triceratopsUI : public UI
 			}
 
 
-			if (ev.button == 2)
+			if (ev.button == 2) 
+			{
+				int cw = GUI->current_widget;
+				if (cw > -1) 
+				{
+					Delirium_UI_Widget_Base* wdg = (Delirium_UI_Widget_Base*)GUI->Widgets[cw];
+					wdg->fine_increment = true - wdg->fine_increment;
+				}
+			}
+
+
+			if (ev.button == 3)
 			{
 
 				int parameter_number = Delirium_UI_Widget_Get_Parameter_Number(GUI);

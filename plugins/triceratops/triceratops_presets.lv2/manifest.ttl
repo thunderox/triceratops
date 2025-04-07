@@ -1,0 +1,309 @@
+@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
+@prefix lv2: <http://lv2plug.in/ns/lv2core#> .
+@prefix pset: <http://lv2plug.in/ns/ext/presets#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix state: <http://lv2plug.in/ns/ext/state#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# BASS ------------------------------------------------------------------------------------------------------------
+
+<Bass.lv2/Bass_5th.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Bass_5th.ttl> .
+
+<Bass.lv2/Bass_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Bass_1.ttl> .
+
+<Bass.lv2/Bass_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Bass_2.ttl> .
+
+<Bass.lv2/Bass_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Bass_3.ttl> .
+
+<Bass.lv2/Bass_Echo.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Bass_Echo.ttl> .
+
+<Bass.lv2/Classic_Analogue.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Classic_Analogue.ttl> .
+
+<Bass.lv2/Early_Bass.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Early_Bass.ttl> .
+
+<Bass.lv2/Headhunter.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Headhunter.ttl> .
+
+<Bass.lv2/League_Bass.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/League_Bass.ttl> .
+
+<Bass.lv2/Mantronix_Bass.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Mantronix_Bass.ttl> .
+
+<Bass.lv2/MT_41_Reggae_Bass.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/MT_41_Reggae_Bass.ttl> .
+
+<Bass.lv2/Thriller.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Thriller.ttl> .
+
+# BRASS ------------------------------------------------------------------------------------------------------------
+
+<Brass.lv2/Castrol.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Brass.lv2/Castrol.ttl> .
+
+<Brass.lv2/Cheesy_Trump.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Brass.lv2/Cheesy_Trump.ttl> .
+
+<Brass.lv2/Horn_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Brass.lv2/Horn_1.ttl> .
+
+<Brass.lv2/Synth_Brass_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Brass.lv2/Synth_Brass_1.ttl> .
+
+<Brass.lv2/Synth_Brass_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Brass.lv2/Synth_Brass_2.ttl> .
+
+<Brass.lv2/Synth_Brass_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Brass.lv2/Synth_Brass_3.ttl> .
+
+# EXPERIMENTAL ------------------------------------------------------------------------------------------------------------
+
+<Experimental.lv2/Clanger.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/Clanger.ttl> .
+
+<Experimental.lv2/First_Contact_Exoplanet.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/First_Contact_Exoplanet.ttl> .
+
+<Experimental.lv2/FM_Twangy.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/FM_Twangy.ttl> .
+
+<Experimental.lv2/Grossriser.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/Grossriser.ttl> .
+
+<Experimental.lv2/Growlie_128.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/Growlie_128.ttl> .
+
+<Experimental.lv2/Inharminic_Piano.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/Inharminic_Piano.ttl> .
+
+<Experimental.lv2/Radio_Workshop_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/Radio_Workshop_1.ttl> .
+
+<Experimental.lv2/Winds_Of_Mars.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Experimental.lv2/Winds_Of_Mars.ttl> .
+
+# KEYS ------------------------------------------------------------------------------------------------------------
+
+
+<Keys.lv2/Electric_Piano.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Electric_Piano.ttl> .
+
+<Keys.lv2/Funky_Clav.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Funky_Clav.ttl> .
+
+<Keys.lv2/Funky_Clav_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Funky_Clav_2.ttl> .
+
+<Keys.lv2/Selected_Ambient_Piano.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Selected_Ambient_Piano.ttl> .
+
+
+# PADS ------------------------------------------------------------------------------------------------------------
+
+<Pads.lv2/Aftermath.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Aftermath.ttl> .
+
+<Pads.lv2/Canada_Pad_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Canada_Pad_1.ttl> .
+
+<Pads.lv2/Canada_Pad_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Canada_Pad_2.ttl> .
+
+<Pads.lv2/Canada_Pad_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Canada_Pad_3.ttl> .
+
+<Pads.lv2/Dirty_Ambient.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Dirty_Ambient.ttl> .
+
+
+# SYNTHS ------------------------------------------------------------------------------------------------------------
+
+<Synths.lv2/CZish.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/CZish.ttl> .
+
+<Synths.lv2/CZish_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/CZish_2.ttl> .
+
+<Synths.lv2/Daft.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Daft.ttl> .
+
+<Synths.lv2/Dervish_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Dervish_1.ttl> .
+
+<Synths.lv2/Dervish_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Dervish_2.ttl> .
+
+<Synths.lv2/Dervish_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Dervish_3.ttl> .
+
+<Synths.lv2/Electroclash_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Electroclash_1.ttl> .
+
+<Synths.lv2/Electroclash_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Electroclash_2.ttl> .
+
+<Synths.lv2/Electroclash_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Electroclash_3.ttl> .
+
+<Synths.lv2/Electro_Oldschool.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Electro_Oldschool.ttl> .
+
+<Synths.lv2/Lazer_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Lazer_1.ttl> .
+
+<Synths.lv2/Lazer_2_Poly.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Lazer_2_Poly.ttl> .
+
+<Synths.lv2/SH101_Lead.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/SH101_Lead.ttl> .
+
+# VOICES ------------------------------------------------------------------------------------------------------------
+
+
+<Voices.lv2/Evil_Whispers.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Voices.lv2/Evil_Whispers.ttl> .
+
+<Voices.lv2/Formant.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Voices.lv2/Formant.ttl> .
+
+<Voices.lv2/Hey.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Voices.lv2/Hey.ttl> .
+
+<Voices.lv2/Jarresque.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Voices.lv2/Jarresque.ttl> .
+
+<Voices.lv2/Nervous_In_A_Cavern.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Voices.lv2/Nervous_In_A_Cavern.ttl> .
+
+<Voices.lv2/Singer.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Voices.lv2/Singer.ttl> .
+
+<Voices.lv2/Yaaah.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Voices.lv2/Yaaah.ttl> .
+
+
+
+
+
+
+
+
+

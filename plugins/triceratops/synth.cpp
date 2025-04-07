@@ -161,6 +161,10 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 	int TRICERATOPS_LFO2_ROUTE_TWO_DEST = synth_params->TRICERATOPS_LFO2_ROUTE_TWO_DEST[0];
 	int TRICERATOPS_LFO3_ROUTE_TWO_DEST = synth_params->TRICERATOPS_LFO3_ROUTE_TWO_DEST[0];
 
+	float test_osc_one = 0;
+	float test_osc_two = 0;
+	float test_osc_three = 0;
+
 	for (uint32_t pos = 0; pos < n_samples; ++pos)
 	{
 
@@ -429,8 +433,6 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 			float routes = 0;	
 
 
-
-
 			//------------- OSCILLATOR STUFF
 
 			// do oscilator 0 ( and 3)
@@ -499,10 +501,10 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 			sinewave_osc[0]->setRate(new_frequency - synth_params->TRICERATOPS_UNISON_ONE[0]);
 		}
 
-			// pulsewidth routes for squarewave
+		// pulsewidth routes for squarewave
 		
-			if (synth_params->TRICERATOPS_WAVE_ONE[0] == 1)
-			{
+		if (synth_params->TRICERATOPS_WAVE_ONE[0] == 1)
+		{
 
 			routes = route_matrix[route_pw1];
 
@@ -600,8 +602,6 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		}
 
 
-
-
 	
 		// do oscillator 2 ( and 5)
 
@@ -691,8 +691,20 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 	float outleft = 0;
 	float outright = 0;
 
+	float out_left_1 = 0;
+	float out_right_1 = 0;
+	float out_1 = 0;
 
-	if (synth_params->TRICERATOPS_ACTIVE_ONE[0]==1) // play oscillator one
+	float out_left_2 = 0;
+	float out_right_2 = 0;
+	float out_2 = 0;
+
+	float out_left_3 = 0;
+	float out_right_3 = 0;
+	float out_3 = 0;
+
+
+	if (synth_params->TRICERATOPS_ACTIVE_ONE[0]==1) // play oscillator one -------------------------------------------
 	{
 
 		float OSC1_pan = synth_params->TRICERATOPS_OSC1_PAN[0];
@@ -701,126 +713,70 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 		OSC1_pan += routes;
 
-		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 0) 
+		float OSC_out = 0;
+
+		if (synth_params->TRICERATOPS_WAVE_ONE[0]<2) 
 		{
-			float OSC_out = 0;
-			if (synth_params->TRICERATOPS_WAVE_ONE[0]<2) 
+			float v=0;
+			float fs=lpO[0]->f / lpO[0]->srate;
+
+			// create waveform
+			lpO[0]->p=lpO[0]->p+fs;
+
+			// add BLEP at end of waveform
+			if (lpO[0]->p>=1)
 			{
-				float v=0;
-				float fs=lpO[0]->f / lpO[0]->srate;
+				lpO[0]->p=lpO[0]->p-1.0;
+				lpO[0]->v=0.0f;
+				osc_AddBLEP(lpO[0], lpO[0]->p/fs,1.0f);
+			}
 
-				// create waveform
-				lpO[0]->p=lpO[0]->p+fs;
+			
 
-				// add BLEP at end of waveform
-				if (lpO[0]->p>=1)
-				{
-					lpO[0]->p=lpO[0]->p-1.0;
-					lpO[0]->v=0.0f;
-					osc_AddBLEP(lpO[0], lpO[0]->p/fs,1.0f);
-				}
+			// add BLEP in middle of wavefor for squarewave
+			if (!lpO[0]->v && lpO[0]->p>lpO[0]->fPWM && lpO[0]->type==OT_SQUARE)
+			{
+				lpO[0]->v=1.0f;
+				osc_AddBLEP(lpO[0], (lpO[0]->p-lpO[0]->fPWM)/fs,-1.0f);
+			}
 
-				
+			// sample value
+			if (lpO[0]->type==OT_SAW)
+				v=lpO[0]->p;
+			else
+				v=lpO[0]->v;
 
-				// add BLEP in middle of wavefor for squarewave
-				if (!lpO[0]->v && lpO[0]->p>lpO[0]->fPWM && lpO[0]->type==OT_SQUARE)
-				{
-					lpO[0]->v=1.0f;
-					osc_AddBLEP(lpO[0], (lpO[0]->p-lpO[0]->fPWM)/fs,-1.0f);
-				}
-
-				// sample value
-				if (lpO[0]->type==OT_SAW)
-					v=lpO[0]->p;
-				else
-					v=lpO[0]->v;
-
-				// add BLEP buffer contents
-				if (lpO[0]->nInit)
-				{
-					v+=lpO[0]->buffer[lpO[0]->iBuffer];
-					lpO[0]->nInit--;
+			// add BLEP buffer contents
+			if (lpO[0]->nInit)
+			{
+				v+=lpO[0]->buffer[lpO[0]->iBuffer];
+				lpO[0]->nInit--;
 				if (++lpO[0]->iBuffer>=lpO[0]->cBuffer) lpO[0]->iBuffer=0;
-				}
-				
-	
-				OSC_out = do_3band(eq_left, v); 	
-				
+			}
+
+			OSC_out = do_3band(eq_left_1, v); 
+			
 		}
 
-		if (synth_params->TRICERATOPS_WAVE_ONE[0]==2) { OSC_out = sinewave_osc[0]->tick(); }
+		if (synth_params->TRICERATOPS_WAVE_ONE[0]==2) OSC_out = sinewave_osc[0]->tick();
 		if (synth_params->TRICERATOPS_WAVE_ONE[0]==3) OSC_out = nixnoise->tick();
-
 
 		if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 		{
-			outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * (1 - OSC1_pan);
-			outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * OSC1_pan;
+			out_left_1 = (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * (1 - OSC1_pan);	
+			out_right_1 = (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * OSC1_pan;
 		}
-			else 
-			{
-				out+= (OSC_out * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
-			}
+		else 
+		{
+			out_1 = (OSC_out * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
+		}
 
-		}
 
 		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 1)  // UNISON ENABLED SO DO BOTH OSCILLATOR 0 and 3
 		{
-			float OSC_out = 0;
-			if (synth_params->TRICERATOPS_WAVE_ONE[0]<2) 
-			{
-				float v=0;
-				float fs=lpO[0]->f / lpO[0]->srate;
-
-				// create waveform
-				lpO[0]->p=lpO[0]->p+fs;
-
-				// add BLEP at end of waveform
-				if (lpO[0]->p>=1)
-				{
-					lpO[0]->p=lpO[0]->p-1.0;
-					lpO[0]->v=0.0f;
-					osc_AddBLEP(lpO[0], lpO[0]->p/fs,1.0f);
-				}
-
-				// add BLEP in middle of wavefor for squarewave
-				if (!lpO[0]->v && lpO[0]->p>lpO[0]->fPWM && lpO[0]->type==OT_SQUARE)
-				{
-					lpO[0]->v=1.0f;
-					osc_AddBLEP(lpO[0], (lpO[0]->p-lpO[0]->fPWM)/fs,-1.0f);
-				}
-
-				// sample value
-				if (lpO[0]->type==OT_SAW)
-					v=lpO[0]->p;
-				else
-					v=lpO[0]->v;
-
-				// add BLEP buffer contents
-				if (lpO[0]->nInit)
-				{
-					v+=lpO[0]->buffer[lpO[0]->iBuffer];
-					lpO[0]->nInit--;
-				if (++lpO[0]->iBuffer>=lpO[0]->cBuffer) lpO[0]->iBuffer=0;
-				}
-	
-				OSC_out = do_3band(eq_left, v);
-			}
-
-			if (synth_params->TRICERATOPS_WAVE_ONE[0]==2) OSC_out = sinewave_osc[0]->tick();
-			if (synth_params->TRICERATOPS_WAVE_ONE[0]==3) OSC_out = nixnoise->tick();
-
-			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
-			{
-				outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * (1 - OSC1_pan);
-				outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * OSC1_pan;
-			}
-			else 
-			{
-				out+= (OSC_out * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
-			}
 
 			OSC_out = 0;
+
 			if (synth_params->TRICERATOPS_WAVE_ONE[0]<2) 
 
 			{
@@ -856,28 +812,28 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				{
 					v+=lpO[3]->buffer[lpO[3]->iBuffer];
 					lpO[3]->nInit--;
-				if (++lpO[3]->iBuffer>=lpO[3]->cBuffer) lpO[3]->iBuffer=0;
+					if (++lpO[3]->iBuffer>=lpO[3]->cBuffer) lpO[3]->iBuffer=0;
 				}
 	
-				OSC_out = do_3band(eq_left, v);
-		}
+				OSC_out = do_3band(eq_right_1, v);
+			}
 
 			if (synth_params->TRICERATOPS_WAVE_ONE[0]==2) OSC_out = sinewave_osc[3]->tick();
 			if (synth_params->TRICERATOPS_WAVE_ONE[0]==3) OSC_out = nixnoise->tick();
 
 			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 			{
-				outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * (1 - OSC1_pan);
-				outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * OSC1_pan;
+				out_left_1 += (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * (1 - OSC1_pan);
+				out_right_1 += (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * OSC1_pan;
 			}
 			else 
 			{
-				out+= (OSC_out * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
+				out_1 += (OSC_out * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
 			}
 		}
 	}
 
-	if (synth_params->TRICERATOPS_ACTIVE_TWO[0]==1) // play oscillator two
+	if (synth_params->TRICERATOPS_ACTIVE_TWO[0]==1) // play oscillator two -----------------------------------------------
 	{
 
 		float OSC2_pan = synth_params->TRICERATOPS_OSC2_PAN[0];
@@ -886,136 +842,81 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 		OSC2_pan += routes;
 
-		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 0)
+		float OSC_out = 0;
+
+		if (synth_params->TRICERATOPS_WAVE_TWO[0]<2)
 		{
-			float OSC_out = 0;
-			if (synth_params->TRICERATOPS_WAVE_TWO[0]<2)
+			float v=0;
+			float fs=lpO[1]->f / lpO[1]->srate;
+
+			// create waveform
+			lpO[1]->p=lpO[1]->p+fs;
+
+			// add BLEP at end of waveform
+			if (lpO[1]->p>=1)
 			{
-				float v=0;
-				float fs=lpO[1]->f / lpO[1]->srate;
+				lpO[1]->p=lpO[1]->p-1.0;
+				lpO[1]->v=0.0f;
+				osc_AddBLEP(lpO[1], lpO[1]->p/fs,1.0f);
+			}
 
-				// create waveform
-				lpO[1]->p=lpO[1]->p+fs;
+			// add BLEP in middle of wavefor for squarewave
+			if (!lpO[1]->v && lpO[1]->p>lpO[1]->fPWM && lpO[1]->type==OT_SQUARE)
+			{
+				lpO[1]->v=1.0f;
+				osc_AddBLEP(lpO[1], (lpO[1]->p-lpO[1]->fPWM)/fs,-1.0f);
+			}
 
-				// add BLEP at end of waveform
-				if (lpO[1]->p>=1)
-				{
-					lpO[1]->p=lpO[1]->p-1.0;
-					lpO[1]->v=0.0f;
-					osc_AddBLEP(lpO[1], lpO[1]->p/fs,1.0f);
-				}
+			// sample value
+			if (lpO[1]->type==OT_SAW)
+				v=lpO[1]->p;
+			else
+				v=lpO[1]->v;
 
-				// add BLEP in middle of wavefor for squarewave
-				if (!lpO[1]->v && lpO[1]->p>lpO[1]->fPWM && lpO[1]->type==OT_SQUARE)
-				{
-					lpO[1]->v=1.0f;
-					osc_AddBLEP(lpO[1], (lpO[1]->p-lpO[1]->fPWM)/fs,-1.0f);
-				}
-
-				// sample value
-				if (lpO[1]->type==OT_SAW)
-					v=lpO[1]->p;
-				else
-					v=lpO[1]->v;
-
-				// add BLEP buffer contents
-				if (lpO[1]->nInit)
-				{
-					v+=lpO[1]->buffer[lpO[1]->iBuffer];
-					lpO[1]->nInit--;
+			// add BLEP buffer contents
+			if (lpO[1]->nInit)
+			{
+				v+=lpO[1]->buffer[lpO[1]->iBuffer];
+				lpO[1]->nInit--;
 				if (++lpO[1]->iBuffer>=lpO[1]->cBuffer) lpO[1]->iBuffer=0;
-				}
-	
-				OSC_out = do_3band(eq_left, v);
 			}
 
-			if (synth_params->TRICERATOPS_WAVE_TWO[0]==2) OSC_out = sinewave_osc[1]->tick();
-			if (synth_params->TRICERATOPS_WAVE_TWO[0]==3) OSC_out = nixnoise->tick();
-
-			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
-			{
-				if (synth_params->TRICERATOPS_MODIFIER_RING[0]==1)
-				{
-					outleft*= 4*(OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
-					outright*= 4*(OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
-				}
-				else
-				{
-					outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
-					outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
-				}
-			}
-			else 
-			{
-				if (synth_params->TRICERATOPS_MODIFIER_RING[0]==1)
-				{
-					out*=4*(OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
-				}
-				else
-				{
-					out+= (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
-				}
-			}
-
+			OSC_out = do_3band(eq_left_2, v);
 		}
 
-		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 1)
+		if (synth_params->TRICERATOPS_WAVE_TWO[0]==2) OSC_out = sinewave_osc[1]->tick();
+		if (synth_params->TRICERATOPS_WAVE_TWO[0]==3) OSC_out = nixnoise->tick();
+
+		if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 		{
-			float OSC_out = 0;
-			if (synth_params->TRICERATOPS_WAVE_TWO[0]<2)
+			if (synth_params->TRICERATOPS_MODIFIER_RING[0]==1)
 			{
-				float v=0;
-				float fs=lpO[1]->f / lpO[1]->srate;
-
-				// create waveform
-				lpO[1]->p=lpO[1]->p+fs;
-
-				// add BLEP at end of waveform
-				if (lpO[1]->p>=1)
-				{
-					lpO[1]->p=lpO[1]->p-1.0;
-					lpO[1]->v=0.0f;
-					osc_AddBLEP(lpO[1], lpO[1]->p/fs,1.0f);
-				}
-
-				// add BLEP in middle of wavefor for squarewave
-				if (!lpO[1]->v && lpO[1]->p>lpO[1]->fPWM && lpO[1]->type==OT_SQUARE)
-				{
-					lpO[1]->v=1.0f;
-					osc_AddBLEP(lpO[1], (lpO[1]->p-lpO[1]->fPWM)/fs,-1.0f);
-				}
-
-				// sample value
-				if (lpO[1]->type==OT_SAW)
-					v=lpO[1]->p;
-				else
-					v=lpO[1]->v;
-
-				// add BLEP buffer contents
-				if (lpO[1]->nInit)
-				{
-					v+=lpO[1]->buffer[lpO[1]->iBuffer];
-					lpO[1]->nInit--;
-				if (++lpO[1]->iBuffer>=lpO[1]->cBuffer) lpO[1]->iBuffer=0;
-				}
-	
-				OSC_out = do_3band(eq_left, v);
+				out_left_2 = 4*(OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
+				out_right_2 = 4*(OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
 			}
-
-			if (synth_params->TRICERATOPS_WAVE_TWO[0]==2) OSC_out = sinewave_osc[1]->tick();
-			if (synth_params->TRICERATOPS_WAVE_TWO[0]==3) OSC_out = nixnoise->tick();
-
-			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
+			else
 			{
-				outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
-				outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
+				out_left_2 = (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
+				out_right_2 = (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
 			}
-			else 
+		}
+		else 
+		{
+			if (synth_params->TRICERATOPS_MODIFIER_RING[0]==1)
 			{
-				out+= (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
+				out_2 = 4*(OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
 			}
+			else
+			{
+				out_2 = (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
+			}
+		}
 
+
+		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 1)  // UNISON ENABLED SO DO BOTH OSCILLATOR 1 and 4
+		{
 			OSC_out = 0;
+
 			if (synth_params->TRICERATOPS_WAVE_TWO[0]<2)
 			{
 				float v=0;
@@ -1050,10 +951,10 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				{
 					v+=lpO[4]->buffer[lpO[4]->iBuffer];
 					lpO[4]->nInit--;
-				if (++lpO[4]->iBuffer>=lpO[4]->cBuffer) lpO[4]->iBuffer=0;
+					if (++lpO[4]->iBuffer>=lpO[4]->cBuffer) lpO[4]->iBuffer=0;
 				}
 	
-				OSC_out = do_3band(eq_left, v);
+				OSC_out = do_3band(eq_right_2, v);
 			}
 
 			if (synth_params->TRICERATOPS_WAVE_TWO[0]==2) OSC_out = sinewave_osc[4]->tick();
@@ -1061,12 +962,12 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 	
 			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 			{
-				outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
-				outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
+				out_left_2 += (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
+				out_right_2 += (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
 			}
 			else 
 			{
-				out+= (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
+				out_2 += (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
 			}
 		}
 	}
@@ -1075,132 +976,85 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 	if (synth_params->TRICERATOPS_ACTIVE_THREE[0]==1) // play oscillator three
 	{
 		float OSC_out = 0;
+
 		float OSC3_pan = synth_params->TRICERATOPS_OSC3_PAN[0];
 
 		float routes = route_matrix[route_pan3];	
 
 		OSC3_pan += routes;
 
-		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 0)
+		OSC_out = 0;
+		if (synth_params->TRICERATOPS_WAVE_THREE[0]<2)
 		{
-			OSC_out = 0;
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]<2)
+			float v=0;
+			float fs=lpO[2]->f / lpO[2]->srate;
+
+			// create waveform
+			lpO[2]->p=lpO[2]->p+fs;
+
+			// add BLEP at end of waveform
+			if (lpO[2]->p>=1)
 			{
-				float v=0;
-				float fs=lpO[2]->f / lpO[2]->srate;
+				lpO[2]->p=lpO[2]->p-1.0;
+				lpO[2]->v=0.0f;
+				osc_AddBLEP(lpO[2], lpO[2]->p/fs,1.0f);
+			}
 
-				// create waveform
-				lpO[2]->p=lpO[2]->p+fs;
+			// add BLEP in middle of wavefor for squarewave
+			if (!lpO[2]->v && lpO[2]->p>lpO[2]->fPWM && lpO[2]->type==OT_SQUARE)
+			{
+				lpO[2]->v=1.0f;
+				osc_AddBLEP(lpO[2], (lpO[2]->p-lpO[2]->fPWM)/fs,-1.0f);
+			}
 
-				// add BLEP at end of waveform
-				if (lpO[2]->p>=1)
-				{
-					lpO[2]->p=lpO[2]->p-1.0;
-					lpO[2]->v=0.0f;
-					osc_AddBLEP(lpO[2], lpO[2]->p/fs,1.0f);
-				}
+			// sample value
+			if (lpO[2]->type==OT_SAW)
+				v=lpO[2]->p;
+			else
+				v=lpO[2]->v;
 
-				// add BLEP in middle of wavefor for squarewave
-				if (!lpO[2]->v && lpO[2]->p>lpO[2]->fPWM && lpO[2]->type==OT_SQUARE)
-				{
-					lpO[2]->v=1.0f;
-					osc_AddBLEP(lpO[2], (lpO[2]->p-lpO[2]->fPWM)/fs,-1.0f);
-				}
-
-				// sample value
-				if (lpO[2]->type==OT_SAW)
-					v=lpO[2]->p;
-				else
-					v=lpO[2]->v;
-
-				// add BLEP buffer contents
-				if (lpO[2]->nInit)
-				{
-					v+=lpO[2]->buffer[lpO[2]->iBuffer];
-					lpO[2]->nInit--;
+			// add BLEP buffer contents
+			if (lpO[2]->nInit)
+			{
+				v+=lpO[2]->buffer[lpO[2]->iBuffer];
+				lpO[2]->nInit--;
 				if (++lpO[2]->iBuffer>=lpO[2]->cBuffer) lpO[2]->iBuffer=0;
-				}
-	
-				OSC_out = do_3band(eq_left, v);
 			}
 
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out = sinewave_osc[2]->tick();
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]==3) OSC_out = nixnoise->tick();
-
-			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
-			{
-				if (synth_params->TRICERATOPS_FM[0] == 1)
-				{
-					out_fm = (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
-				}
-				if (synth_params->TRICERATOPS_FM[0] == 0)
-				{
-					outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_THREE[0]) * (1 - OSC3_pan);
-					outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_THREE[0]) * OSC3_pan;;
-				}
-			}
-			else 
-			{
-				if (synth_params->TRICERATOPS_FM[0] == 1)
-				{
-					out_fm = (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
-				} 
-				if (synth_params->TRICERATOPS_FM[0] == 0)
-				{
-					out +=  (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
-				}
-			}
-
-
-
-
+			OSC_out = do_3band(eq_left_3, v);
 		}
 
-		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 1)
+		if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out = sinewave_osc[2]->tick();
+		if (synth_params->TRICERATOPS_WAVE_THREE[0]==3) OSC_out = nixnoise->tick();
+
+		if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
+		{
+			if (synth_params->TRICERATOPS_FM[0] == 1)
+			{
+				out_fm = (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
+			}
+			if (synth_params->TRICERATOPS_FM[0] == 0)
+			{
+				out_left_3 = (OSC_out *synth_params->TRICERATOPS_VOLUME_THREE[0]) * (1 - OSC3_pan);
+				out_right_3 = (OSC_out *synth_params->TRICERATOPS_VOLUME_THREE[0]) * OSC3_pan;;
+			}
+		}
+		else 
+		{
+			if (synth_params->TRICERATOPS_FM[0] == 1)
+			{
+				out_fm = (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
+			} 
+			if (synth_params->TRICERATOPS_FM[0] == 0)
+			{
+				out_3 =  (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
+			}
+		}
+
+
+		if (synth_params->TRICERATOPS_UNISON_ACTIVATE[0] == 1)  // UNISON ENABLED SO DO BOTH OSCILLATOR 2 and 5
 		{
 			OSC_out = 0;
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]<2)
-			{
-				float v=0;
-				float fs=lpO[2]->f / lpO[2]->srate;
-
-				// create waveform
-				lpO[2]->p=lpO[2]->p+fs;
-
-				// add BLEP at end of waveform
-				if (lpO[2]->p>=1)
-				{
-					lpO[2]->p=lpO[2]->p-1.0;
-					lpO[2]->v=0.0f;
-					osc_AddBLEP(lpO[2], lpO[2]->p/fs,1.0f);
-				}
-
-				// add BLEP in middle of wavefor for squarewave
-				if (!lpO[2]->v && lpO[2]->p>lpO[2]->fPWM && lpO[2]->type==OT_SQUARE)
-				{
-					lpO[2]->v=1.0f;
-					osc_AddBLEP(lpO[2], (lpO[2]->p-lpO[2]->fPWM)/fs,-1.0f);
-				}
-
-				// sample value
-				if (lpO[2]->type==OT_SAW)
-					v=lpO[2]->p;
-				else
-					v=lpO[2]->v;
-
-				// add BLEP buffer contents
-				if (lpO[2]->nInit)
-				{
-					v+=lpO[2]->buffer[lpO[2]->iBuffer];
-					lpO[2]->nInit--;
-				if (++lpO[2]->iBuffer>=lpO[2]->cBuffer) lpO[2]->iBuffer=0;
-				}
-	
-				OSC_out = do_3band(eq_left, v);
-			}
-
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out = sinewave_osc[2]->tick();
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]==3) OSC_out = nixnoise->tick();
 
 			if (synth_params->TRICERATOPS_WAVE_THREE[0]<2)
 			{
@@ -1236,14 +1090,14 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				{
 					v+=lpO[5]->buffer[lpO[5]->iBuffer];
 					lpO[5]->nInit--;
-				if (++lpO[5]->iBuffer>=lpO[5]->cBuffer) lpO[5]->iBuffer=0;
+					if (++lpO[5]->iBuffer>=lpO[5]->cBuffer) lpO[5]->iBuffer=0;
 				}
 	
-				OSC_out = do_3band(eq_left, v);
+				OSC_out = do_3band(eq_right_3, v);
 			}
 
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out += sinewave_osc[5]->tick();
-			if (synth_params->TRICERATOPS_WAVE_THREE[0]==3) OSC_out += nixnoise->tick();
+			if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out = sinewave_osc[5]->tick();
+			if (synth_params->TRICERATOPS_WAVE_THREE[0]==3) OSC_out = nixnoise->tick();
 
 			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 			{
@@ -1253,8 +1107,8 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				}
 				if (synth_params->TRICERATOPS_FM[0] == 0)
 				{
-					outleft+= (OSC_out *synth_params->TRICERATOPS_VOLUME_THREE[0]) * (1 - OSC3_pan);
-					outright+= (OSC_out *synth_params->TRICERATOPS_VOLUME_THREE[0]) * OSC3_pan;;
+					out_left_3 += (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * (1 - OSC3_pan);
+					out_right_3 += (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * OSC3_pan;;
 				}
 			}
 			else 
@@ -1265,12 +1119,16 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				} 
 				if (synth_params->TRICERATOPS_FM[0] == 0)
 				{
-					out +=  (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
+					out_3 +=  (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
 				}
 			}
 		}
 
 	}
+
+	outleft = out_left_1 + out_left_2 + out_left_3;
+	outright = out_right_1 + out_right_2 + out_right_3;
+	out = out_1 + out_2 + out_3;
 
 	if (synth_params->TRICERATOPS_SYNC[0] == 1) 
 	{
@@ -1638,9 +1496,10 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 			out_left[pos] = out_left_atanClip * 0.25;
 			out_right[pos] = out_right_atanClip * 0.25;
 		}
-
 	}	
 	
+
+
 	return;
 }
 
@@ -1779,17 +1638,41 @@ void synth::init_oscillators(double sample_rate)
 	
 	// Initialize EQs
 				
-	eq_left = new EQSTATE();
-	init_3band_state(eq_left,220,5000,sample_rate);	
-	eq_left->lg = 0.0; // BASS
-	eq_left->mg = 1.0; // MIDS
-	eq_left->hg = 1.0; // HIGHS
+	eq_left_1 = new EQSTATE();
+	init_3band_state(eq_left_1,220,5000,sample_rate);	
+	eq_left_1->lg = 0.0; // BASS
+	eq_left_1->mg = 1.0; // MIDS
+	eq_left_1->hg = 1.0; // HIGHS
 		
-	eq_right = new EQSTATE();
-	init_3band_state(eq_right,220,5000,sample_rate);		
-	eq_right->lg = 0.0; // BASS
-	eq_right->mg = 1.0; // MIDS
-	eq_right->hg = 1.0; // HIGHS 
+	eq_right_1 = new EQSTATE();
+	init_3band_state(eq_right_1,220,5000,sample_rate);		
+	eq_right_1->lg = 0.0; // BASS
+	eq_right_1->mg = 1.0; // MIDS
+	eq_right_1->hg = 1.0; // HIGHS 
+
+	eq_left_2 = new EQSTATE();
+	init_3band_state(eq_left_2,220,5000,sample_rate);	
+	eq_left_2->lg = 0.0; // BASS
+	eq_left_2->mg = 1.0; // MIDS
+	eq_left_2->hg = 1.0; // HIGHS
+		
+	eq_right_2 = new EQSTATE();
+	init_3band_state(eq_right_2,220,5000,sample_rate);		
+	eq_right_2->lg = 0.0; // BASS
+	eq_right_2->mg = 1.0; // MIDS
+	eq_right_2->hg = 1.0; // HIGHS 
+
+	eq_left_3 = new EQSTATE();
+	init_3band_state(eq_left_3,220,5000,sample_rate);	
+	eq_left_3->lg = 0.0; // BASS
+	eq_left_3->mg = 1.0; // MIDS
+	eq_left_3->hg = 1.0; // HIGHS
+		
+	eq_right_3 = new EQSTATE();
+	init_3band_state(eq_right_3,220,5000,sample_rate);		
+	eq_right_3->lg = 0.0; // BASS
+	eq_right_3->mg = 1.0; // MIDS
+	eq_right_3->hg = 1.0; // HIGHS 
 	 
 }
 

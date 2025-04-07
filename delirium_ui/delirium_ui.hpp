@@ -91,6 +91,7 @@ class Delirium_UI_Widget_Base
 	double default_values[4];
 	int current_value;
 	double increment;
+	bool fine_increment;
 	int route_number;
 	int press_count;
 	int wave_mode;

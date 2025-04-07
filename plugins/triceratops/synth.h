@@ -208,8 +208,12 @@ class synth
 
 	string bundle_path;
 	
-	EQSTATE* eq_left;
-	EQSTATE* eq_right;
+	EQSTATE* eq_left_1;
+	EQSTATE* eq_right_1;
+	EQSTATE* eq_left_2;
+	EQSTATE* eq_right_2;
+	EQSTATE* eq_left_3;
+	EQSTATE* eq_right_3;
 
 	static const int env_state_attack=1; 
 	static const int env_state_decay=2;

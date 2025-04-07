@@ -50,15 +50,8 @@ install:
 	mkdir ~/.config/thunderox/triceratops -p
 	chmod 777 ~/.config/thunderox/triceratops -R
 	cp $(CURDIR)/bin/triceratops.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_bass.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_brass.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_electric_piano.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_experimental.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_house_and_rave /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_lead.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_pads.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_synth.lv2 /usr/lib/lv2 -r
-	cp $(CURDIR)/plugins/triceratops/presets/triceratops_presets_vocal.lv2 /usr/lib/lv2 -r
+	cp $(CURDIR)/plugins/triceratops/triceratops_presets.lv2 /usr/lib/lv2 -r
+
 	cp $(CURDIR)/plugins/triceratops/logo.png /usr/lib/lv2/triceratops.lv2
 	cp $(CURDIR)/plugins/triceratops/manifest.ttl /usr/lib/lv2/triceratops.lv2
 	cp $(CURDIR)/bin/triceratops-dssi /usr/lib/dssi -r
@@ -71,15 +64,7 @@ install:
 uninstall:
 	rm ~/.config/thunderox -R
 	rm /usr/lib/lv2/triceratops.lv2 -rf
-	rm /usr/lib/lv2/triceratops_presets_bass -rf
-	rm /usr/lib/lv2/triceratops_presets_brass -rf
-	rm /usr/lib/lv2/triceratops_presets_electric_piano -rf
-	rm /usr/lib/lv2/triceratops_presets_experimental -rf
-	rm /usr/lib/lv2/triceratops_presets_house_and_rave-rf
-	rm /usr/lib/lv2/triceratops_presets_lead -rf
-	rm /usr/lib/lv2/triceratops_presets_pads -rf
-	rm /usr/lib/lv2/triceratops_presets_synth -rf	
-	rm /usr/lib/lv2/triceratops_presets_vocal -rf	
+	rm /usr/lib/lv2/plugins/triceratops/triceratops_presets.lv2 -rf
 	rm /usr/lib/dssi/triceratops.dssi -rf
 	rm /usr/lib/dssi/triceratops-dssi.so -f
 	rm /usr/lib/vst/triceratops-vst.so -f
