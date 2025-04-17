@@ -9,8 +9,8 @@
 <>
 	a pset:Preset ;
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
-	pset:bank <Bass> ;
-	rdfs:label "Bass_1" ;
+	rdfs:label "Dubstep Overdrive_2" ;
+	pset:bank <House_&_Rave> ;
 	lv2:port [
 		lv2:symbol "TRICERATOPS_ADSR1_ATTACK" ;
 		pset:value 1.0
@@ -19,7 +19,7 @@
 		pset:value 0.25
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR1_RELEASE" ;
-		pset:value 0.5869565
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR1_ROUTE_ONE" ;
 		pset:value 1.0
@@ -37,16 +37,16 @@
 		pset:value 0.52999997
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR2_ATTACK" ;
-		pset:value 0.72173911
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR2_DECAY" ;
-		pset:value 0.50478256
+		pset:value 0.48478258
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR2_RELEASE" ;
-		pset:value 0.96521741
+		pset:value 0.46500003
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR2_ROUTE_ONE" ;
-		pset:value 0.61260849
+		pset:value 0.5
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR2_ROUTE_ONE_DEST" ;
 		pset:value 1.0
@@ -58,7 +58,7 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR2_SUSTAIN" ;
-		pset:value 0.76956522
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_ADSR3_ATTACK" ;
 		pset:value 0.34285712
@@ -82,19 +82,19 @@
 		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_AMP_DRIVE" ;
-		pset:value 0.0
+		pset:value 0.0869565
 	] , [
 		lv2:symbol "TRICERATOPS_FILTER_FREQUENCY" ;
-		pset:value 0.15426087
+		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_FILTER_KEY_FOLLOW" ;
-		pset:value -0.04347825
+		pset:value 0.04999995
 	] , [
 		lv2:symbol "TRICERATOPS_FILTER_MODE" ;
 		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_FILTER_RESONANCE" ;
-		pset:value 0.46956521
+		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_FM" ;
 		pset:value 0.0
@@ -124,16 +124,19 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LEGATO" ;
-		pset:value 0.0
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO1_FILTER" ;
 		pset:value 0.0
 	] , [
+		lv2:symbol "TRICERATOPS_LFO1_ONESHOT" ;
+		pset:value 0.0
+	] , [
 		lv2:symbol "TRICERATOPS_LFO1_OSC1_AMOUNT" ;
-		pset:value 0.01861704
+		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO1_OSC2_AMOUNT" ;
-		pset:value 0.0
+		pset:value 0.89130437
 	] , [
 		lv2:symbol "TRICERATOPS_LFO1_OSC3_AMOUNT" ;
 		pset:value 0.0
@@ -145,7 +148,7 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO1_ROUTE_ONE_DEST" ;
-		pset:value 0.0
+		pset:value 8.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO1_ROUTE_TWO" ;
 		pset:value 0.0
@@ -154,25 +157,28 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO1_SPEED" ;
-		pset:value 269.0
+		pset:value 7.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO1_WAVE" ;
 		pset:value 2.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_FILTER" ;
+		pset:value 0.20463771
+	] , [
+		lv2:symbol "TRICERATOPS_LFO2_ONESHOT" ;
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_OSC1_AMOUNT" ;
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_OSC2_AMOUNT" ;
-		pset:value 0.00869565
+		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_OSC3_AMOUNT" ;
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_RETRIG" ;
-		pset:value 0.0
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_ROUTE_ONE" ;
 		pset:value 0.0
@@ -187,12 +193,15 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_SPEED" ;
-		pset:value 330.0
+		pset:value 480.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO2_WAVE" ;
-		pset:value 2.0
+		pset:value 5.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO3_FILTER" ;
+		pset:value 0.07246375
+	] , [
+		lv2:symbol "TRICERATOPS_LFO3_ONESHOT" ;
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO3_OSC1_AMOUNT" ;
@@ -205,7 +214,7 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO3_RETRIG" ;
-		pset:value 0.0
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO3_ROUTE_ONE" ;
 		pset:value 0.0
@@ -220,16 +229,16 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO3_SPEED" ;
-		pset:value 285.0
+		pset:value 150.0
 	] , [
 		lv2:symbol "TRICERATOPS_LFO3_WAVE" ;
-		pset:value 0.0
+		pset:value 2.0
 	] , [
 		lv2:symbol "TRICERATOPS_MASTER_TUNE" ;
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_MASTER_VOLUME" ;
-		pset:value 1.8399992
+		pset:value 1.08999991
 	] , [
 		lv2:symbol "TRICERATOPS_MIDI_CHANNEL" ;
 		pset:value 1.0
@@ -253,7 +262,7 @@
 		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC1_INERTIA" ;
-		pset:value 0.0
+		pset:value 0.23750001
 	] , [
 		lv2:symbol "TRICERATOPS_OSC1_OCTAVE" ;
 		pset:value -3.0
@@ -283,7 +292,7 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC2_OCTAVE" ;
-		pset:value -3.0
+		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC2_PAN" ;
 		pset:value 0.37000012
@@ -295,10 +304,10 @@
 		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC2_WAVE" ;
-		pset:value 2.0
+		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC3_ACTIVE" ;
-		pset:value 1.0
+		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC3_DETUNE" ;
 		pset:value 0.25
@@ -310,7 +319,7 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC3_OCTAVE" ;
-		pset:value -4.0
+		pset:value -2.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC3_PAN" ;
 		pset:value 0.5
@@ -319,10 +328,10 @@
 		pset:value 0.0
 	] , [
 		lv2:symbol "TRICERATOPS_OSC3_VOLUME" ;
-		pset:value 1.0
+		pset:value 0.77000022
 	] , [
 		lv2:symbol "TRICERATOPS_OSC3_WAVE" ;
-		pset:value 2.0
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_PANIC" ;
 		pset:value 0.0
@@ -331,33 +340,33 @@
 		pset:value 24.0
 	] , [
 		lv2:symbol "TRICERATOPS_SYNC" ;
-		pset:value 0.0
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_UNISON_ACTIVATE" ;
-		pset:value 0.0
+		pset:value 1.0
 	] , [
 		lv2:symbol "TRICERATOPS_UNISON_ONE" ;
-		pset:value 2.57500005
+		pset:value 0.92753625
 	] , [
 		lv2:symbol "TRICERATOPS_UNISON_THREE" ;
-		pset:value 4.67500019
+		pset:value 0.3099997
 	] , [
 		lv2:symbol "TRICERATOPS_UNISON_TWO" ;
-		pset:value 2.79999995
+		pset:value 0.55072474
 	] , [
 		lv2:symbol "TRICERATOPS_WARMTH" ;
-		pset:value 1.0
-	] , [
-		lv2:symbol "kParametertriceratopsTime" ;
 		pset:value 0.0
 	] , [
 		lv2:symbol "kParametertriceratopsTime" ;
 		pset:value 0.0
 	] , [
-		lv2:symbol "lv2_port_116" ;
+		lv2:symbol "kParametertriceratopsTime" ;
+		pset:value 0.0
+	] , [
+		lv2:symbol "lv2_port_119" ;
 		pset:value 1.0
 	] , [
-		lv2:symbol "lv2_port_117" ;
+		lv2:symbol "lv2_port_120" ;
 		pset:value 0.0
 	] , [
 		lv2:symbol "preset_category" ;

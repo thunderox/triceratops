@@ -33,7 +33,7 @@ void Delirium_UI_Widget_Fader_Route::Draw(cairo_t* cr)
 	// ------------------------------------------------------------------
 
 	// draw vertical scale bars
-
+ 
 	cairo_set_line_width(cr, 0.4);
 	cairo_set_source_rgba(cr, 0.9,0.9,0.9,1.0);
 
@@ -105,7 +105,7 @@ void Delirium_UI_Widget_Fader_Route::Draw(cairo_t* cr)
 	cairo_move_to(cr,x_text_centred, wY + wH - font_size);
 	cairo_show_text(cr, number.str().c_str());
 	
-		switch (route_number)
+	switch (route_number)
 	{	
 		case 0:	
 		label = "AMP";
@@ -120,39 +120,39 @@ void Delirium_UI_Widget_Fader_Route::Draw(cairo_t* cr)
 		break;
 	
 		case 3:
-		label = "OSC-1";
+		label = "O1-FRQ";
 		break;
 
 		case 4:	
-		label = "OSC-2";
+		label = "O2-FRQ";
 		break; 
 				
 		case 5:
-		label = "OSC-3";
+		label = "O3-FRQ";
 		break;
 
 		case 6:
-		label = "PW1";
+		label = "O1-PW";
 		break;
 
 		case 7:
-		label = "PW2";
+		label = "O2-PW";
 		break;
 
 		case 8:
-		label = "PW3";
+		label = "O3-PW";
 		break;
 	
 		case 9:
-		label = "PAN1";
+		label = "O1-PAN";
 		break;
 
 		case 10:
-		label = "PAN2";
+		label = "O2-PAN";
 		break;
 
 		case 11:
-		label = "PAN3";
+		label = "O3-PAN";
 		break;
 
 		case 12:
@@ -165,6 +165,18 @@ void Delirium_UI_Widget_Fader_Route::Draw(cairo_t* cr)
 
 		case 14:
 		label = "LFO3-SP";
+		break;
+
+		case 15:
+		label = "O1-AMP";
+		break;
+
+		case 16:
+		label = "O2-AMP";
+		break;
+
+		case 17:
+		label = "O3-AMP";
 		break;
 
 	}
@@ -192,12 +204,10 @@ void Delirium_UI_Widget_Fader_Route::Left_Button_Press(int xm, int ym)
 
 	float ypixel = (ym - wY) - font_size;
 	
-	press_count++;
-	
-	if (ypixel<0 && press_count==1 )
+	if (ypixel<0)
 	{
 		route_number++;
-		if (route_number > 14) route_number = 0;
+		if (route_number > 17) route_number = 0;
 	}
 	
 	if (ypixel<0) return;
@@ -208,7 +218,6 @@ void Delirium_UI_Widget_Fader_Route::Left_Button_Press(int xm, int ym)
 	if (value > 1) value = 1;
 	normalised_values[0] = value;
 	Convert_Value_To_Scaled();
-	// cout << values[0] << endl;
 }
 
 //-------------------------------------------------------------------------------------------
@@ -232,9 +241,9 @@ void Delirium_UI_Widget_Fader_Route::Mouse_Scroll(int xm, int ym, float delta)
 	
 	if (ym-wY <= font_size)
 	{
-		route_number += delta;
-		if (route_number < 0) route_number = 14;
-		if (route_number > 14) route_number = 0;
+		route_number += (delta > 0) - (delta < 0);
+		if (route_number < 0) route_number = 17;
+		if (route_number > 17) route_number = 0;
 	}
 
 	double inc = increment;

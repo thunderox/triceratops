@@ -10,6 +10,10 @@ void Delirium_UI_Widget_Filter::Draw(cairo_t* cr)
 	float wW = width * x_grid_size;
 	float wH = height * y_grid_size;
 
+	increment = 1;
+	min = 0;
+	max = 4;
+
 	cairo_set_source_rgb(cr, 0.15,0,0);
 	cairo_rectangle(cr, wX, wY + (font_size * 0.5), wW, wH);
 	cairo_fill(cr);
@@ -140,14 +144,10 @@ void Delirium_UI_Widget_Filter::Left_Button_Press(int xm, int ym)
 	float w = width * x_grid_size;
 	float h = height * y_grid_size;
 		
-	toggle_mode = 1 - toggle_mode;
+	values[0]++;
+	if (values[0]>4) values[0]=0;
+	Convert_Scaled_To_Value();
 
-	if (toggle_mode==0) 
-	{
-		values[0]++;
-		if (values[0]>4) values[0]=0;
-		Convert_Scaled_To_Value();
-	}
 }
 
 

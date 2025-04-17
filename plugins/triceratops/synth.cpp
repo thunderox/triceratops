@@ -148,7 +148,8 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 	lpO[2]->type = synth_params->TRICERATOPS_WAVE_THREE[0];
 	lpO[5]->type = synth_params->TRICERATOPS_WAVE_THREE[0];
 
-	float route_matrix[16];
+	float route_matrix[18];
+	bool route_type[18];
 
 	int TRICERATOPS_ADSR1_ROUTE_ONE_DEST = synth_params->TRICERATOPS_ADSR1_ROUTE_ONE_DEST[0];
 	int TRICERATOPS_ADSR2_ROUTE_ONE_DEST = synth_params->TRICERATOPS_ADSR2_ROUTE_ONE_DEST[0];
@@ -378,53 +379,137 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		if (synth_params->TRICERATOPS_ADSR3_LFO2_AMOUNT[0] != 0) lfo2 *= env_lfo_level;
 		if (synth_params->TRICERATOPS_ADSR3_LFO3_AMOUNT[0] != 0) lfo3 *= env_lfo_level;
 
-		route_matrix[0] = 0;
-		route_matrix[1] = 0;
-		route_matrix[2] = 0;
-		route_matrix[3] = 0;
-		route_matrix[4] = 0;
-		route_matrix[5] = 0;
-		route_matrix[6] = 0;
-		route_matrix[7] = 0;
-		route_matrix[8] = 0;
-		route_matrix[9] = 0;
-		route_matrix[10] = 0;
-		route_matrix[11] = 0;
-		route_matrix[12] = 0;
-		route_matrix[13] = 0;
-		route_matrix[14] = 0;
-		route_matrix[15] = 0;
+		route_matrix[route_none] = 0;
+		route_matrix[route_cutoff] = 0;
+		route_matrix[route_res] = 0;
+		route_matrix[route_osc1_pitch] = 0;
+		route_matrix[route_osc2_pitch] = 0;
+		route_matrix[route_osc3_pitch] = 0;
+		route_matrix[route_osc1_pw] = 0;
+		route_matrix[route_osc2_pw] = 0;
+		route_matrix[route_osc3_pw] = 0;
+		route_matrix[route_osc1_pan] = 0;
+		route_matrix[route_osc2_pan] = 0;
+		route_matrix[route_osc3_pan] = 0;
+		route_matrix[route_lfo1_sp] = 0;
+		route_matrix[route_lfo2_sp] = 0;
+		route_matrix[route_lfo3_sp] = 0;
+		route_matrix[route_osc1_amp] = 0;
+		route_matrix[route_osc2_amp] = 0;
+		route_matrix[route_osc3_amp] = 0;
+
+		route_type[route_none] = false;
+		route_type[route_cutoff] = false;
+		route_type[route_res] = false;
+		route_type[route_osc1_pitch] = false;
+		route_type[route_osc2_pitch] = false;
+		route_type[route_osc3_pitch] = false;
+		route_type[route_osc1_pw] = false;
+		route_type[route_osc2_pw] = false;
+		route_type[route_osc3_pw] = false;
+		route_type[route_osc1_pan] = false;
+		route_type[route_osc2_pan] = false;
+		route_type[route_osc3_pan] = false;
+		route_type[route_lfo1_sp] = false;
+		route_type[route_lfo2_sp] = false;
+		route_type[route_lfo3_sp] = false;
+		route_type[route_osc1_amp] = true;
+		route_type[route_osc2_amp] = true;
+		route_type[route_osc3_amp] = true;
 
 
 		route_matrix[TRICERATOPS_ADSR1_ROUTE_ONE_DEST] += 
 			synth_params->TRICERATOPS_ADSR1_ROUTE_ONE[0] * env_amp_level;
-	
-		route_matrix[TRICERATOPS_ADSR2_ROUTE_ONE_DEST] += 
-			synth_params->TRICERATOPS_ADSR2_ROUTE_ONE[0] * env_filter_level;
 
 		route_matrix[TRICERATOPS_ADSR1_ROUTE_TWO_DEST] +=
 			synth_params->TRICERATOPS_ADSR1_ROUTE_TWO[0] * env_amp_level;
 
+
+
+		route_matrix[TRICERATOPS_ADSR2_ROUTE_ONE_DEST] += 
+			synth_params->TRICERATOPS_ADSR2_ROUTE_ONE[0] * env_filter_level;
+
 		route_matrix[TRICERATOPS_ADSR2_ROUTE_TWO_DEST] +=
 			synth_params->TRICERATOPS_ADSR2_ROUTE_TWO[0] * env_filter_level;
 
-		route_matrix[TRICERATOPS_LFO1_ROUTE_ONE_DEST] +=
-			synth_params->TRICERATOPS_LFO1_ROUTE_ONE[0] * lfo1;
 
-		route_matrix[TRICERATOPS_LFO2_ROUTE_ONE_DEST] +=
-			synth_params->TRICERATOPS_LFO2_ROUTE_ONE[0] * lfo2;
+		if (route_type[TRICERATOPS_LFO1_ROUTE_ONE_DEST] == false)
+		{
+			route_matrix[TRICERATOPS_LFO1_ROUTE_ONE_DEST] +=
+				synth_params->TRICERATOPS_LFO1_ROUTE_ONE[0] * lfo1;
+		}
+		else
+		{
+			route_matrix[TRICERATOPS_LFO1_ROUTE_ONE_DEST] +=
+				synth_params->TRICERATOPS_LFO1_ROUTE_ONE[0] * (1-((1 + lfo1)/2));
+				route_matrix[TRICERATOPS_LFO1_ROUTE_ONE_DEST] + 0.0000002;
+		}
 
-		route_matrix[TRICERATOPS_LFO3_ROUTE_ONE_DEST] +=
-			synth_params->TRICERATOPS_LFO3_ROUTE_ONE[0] * lfo3;
+		if (route_type[TRICERATOPS_LFO1_ROUTE_TWO_DEST] == false)
+		{
+			route_matrix[TRICERATOPS_LFO1_ROUTE_TWO_DEST] +=
+				synth_params->TRICERATOPS_LFO1_ROUTE_TWO[0] * lfo1;
+		}
+		else
+		{
+			route_matrix[TRICERATOPS_LFO1_ROUTE_TWO_DEST] +=
+				synth_params->TRICERATOPS_LFO1_ROUTE_TWO[0] * (1-((1 + lfo1)/2));
+				route_matrix[TRICERATOPS_LFO1_ROUTE_TWO_DEST] + 0.0000002;
+		}
 
-		route_matrix[TRICERATOPS_LFO1_ROUTE_TWO_DEST] +=
-			synth_params->TRICERATOPS_LFO1_ROUTE_TWO[0] * lfo1;
 
-		route_matrix[TRICERATOPS_LFO2_ROUTE_TWO_DEST] +=
-			synth_params->TRICERATOPS_LFO2_ROUTE_TWO[0] * lfo2;
 
-		route_matrix[TRICERATOPS_LFO3_ROUTE_TWO_DEST] +=
-			synth_params->TRICERATOPS_LFO3_ROUTE_TWO[0] * lfo3;
+
+		if (route_type[TRICERATOPS_LFO2_ROUTE_ONE_DEST] == false)
+		{
+			route_matrix[TRICERATOPS_LFO2_ROUTE_ONE_DEST] +=
+				synth_params->TRICERATOPS_LFO2_ROUTE_ONE[0] * lfo2;
+		}
+		else
+		{
+			route_matrix[TRICERATOPS_LFO2_ROUTE_ONE_DEST] +=
+				synth_params->TRICERATOPS_LFO2_ROUTE_ONE[0] * (1-((1 + lfo2)/2));
+				route_matrix[TRICERATOPS_LFO2_ROUTE_ONE_DEST] + 0.0000002;
+		}
+
+		if (route_type[TRICERATOPS_LFO2_ROUTE_TWO_DEST] == false)
+		{
+			route_matrix[TRICERATOPS_LFO2_ROUTE_TWO_DEST] +=
+				synth_params->TRICERATOPS_LFO2_ROUTE_TWO[0] * lfo2;
+		}
+		else
+		{
+			route_matrix[TRICERATOPS_LFO2_ROUTE_TWO_DEST] +=
+				synth_params->TRICERATOPS_LFO2_ROUTE_TWO[0] * (1-((1 + lfo2)/2));
+				route_matrix[TRICERATOPS_LFO2_ROUTE_TWO_DEST] + 0.0000002;
+		}
+
+
+
+
+		if (route_type[TRICERATOPS_LFO3_ROUTE_ONE_DEST] == false)
+		{
+			route_matrix[TRICERATOPS_LFO3_ROUTE_ONE_DEST] +=
+				synth_params->TRICERATOPS_LFO3_ROUTE_ONE[0] * lfo3;
+		}
+		else
+		{
+			route_matrix[TRICERATOPS_LFO3_ROUTE_ONE_DEST] +=
+				synth_params->TRICERATOPS_LFO3_ROUTE_ONE[0] * (1-((1 + lfo3)/2));
+				route_matrix[TRICERATOPS_LFO3_ROUTE_ONE_DEST] + 0.0000002;
+		}
+
+		if (route_type[TRICERATOPS_LFO3_ROUTE_TWO_DEST] == false)
+		{
+			route_matrix[TRICERATOPS_LFO3_ROUTE_TWO_DEST] +=
+				synth_params->TRICERATOPS_LFO3_ROUTE_TWO[0] * lfo3;
+		}
+		else
+		{
+			route_matrix[TRICERATOPS_LFO3_ROUTE_TWO_DEST] +=
+				synth_params->TRICERATOPS_LFO3_ROUTE_TWO[0] * (1-((1 + lfo3)/2));
+				route_matrix[TRICERATOPS_LFO3_ROUTE_TWO_DEST] + 0.0000002;
+		}
 			
 		
 	
@@ -437,7 +522,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 			// do oscilator 0 ( and 3)
 	
-			routes = route_matrix[route_OSC1] * 12;
+			routes = route_matrix[route_osc1_pitch] * 12;
 
 			if (synth_params->TRICERATOPS_MODIFIER_DIRT[0] > 0)
 				routes += (nixnoise->tick()*synth_params->TRICERATOPS_MODIFIER_DIRT[0]);
@@ -506,7 +591,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		if (synth_params->TRICERATOPS_WAVE_ONE[0] == 1)
 		{
 
-			routes = route_matrix[route_pw1];
+			routes = route_matrix[route_osc1_pw];
 
 			routes += synth_params->TRICERATOPS_PULSEWIDTH_ONE[0]+0.5;
 
@@ -522,7 +607,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 		// do oscilator 1 ( and 4)
 	
-		routes = route_matrix[route_OSC2] * 12;
+		routes = route_matrix[route_osc2_pitch] * 12;
 
 		if (synth_params->TRICERATOPS_MODIFIER_DIRT[0] > 0)
 			routes += (nixnoise->tick()*synth_params->TRICERATOPS_MODIFIER_DIRT[0]);
@@ -587,16 +672,16 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 			// pulsewidth routes for squarewave
 		
-			if (synth_params->TRICERATOPS_WAVE_TWO[0] == 1)
-			{
+		if (synth_params->TRICERATOPS_WAVE_TWO[0] == 1)
+		{
 
-			routes = route_matrix[route_pw2];
+			routes = route_matrix[route_osc2_pw];
 
 			routes += synth_params->TRICERATOPS_PULSEWIDTH_TWO[0]+0.5;
 
 			if (routes < 0) routes = 0;
 			if (routes > 1) routes = 1;
-	
+
 			lpO[1]->fPWM = routes;
 			lpO[4]->fPWM = routes;
 		}
@@ -606,7 +691,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		// do oscillator 2 ( and 5)
 
 
-		routes = route_matrix[route_OSC3] * 12;
+		routes = route_matrix[route_osc3_pitch] * 12;
 
 		if (synth_params->TRICERATOPS_MODIFIER_DIRT[0] > 0)
 			routes += (nixnoise->tick()*synth_params->TRICERATOPS_MODIFIER_DIRT[0]);
@@ -673,7 +758,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		if (synth_params->TRICERATOPS_WAVE_THREE[0] == 1)
 		{
 
-			routes = route_matrix[route_pw3];
+			routes = route_matrix[route_osc3_pw];
 	
 			routes += synth_params->TRICERATOPS_PULSEWIDTH_THREE [0]+0.5;
 
@@ -709,7 +794,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 		float OSC1_pan = synth_params->TRICERATOPS_OSC1_PAN[0];
 
-		float routes = route_matrix[route_pan1];
+		float routes = route_matrix[route_osc1_pan];
 
 		OSC1_pan += routes;
 
@@ -731,7 +816,6 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				osc_AddBLEP(lpO[0], lpO[0]->p/fs,1.0f);
 			}
 
-			
 
 			// add BLEP in middle of wavefor for squarewave
 			if (!lpO[0]->v && lpO[0]->p>lpO[0]->fPWM && lpO[0]->type==OT_SQUARE)
@@ -754,12 +838,17 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				if (++lpO[0]->iBuffer>=lpO[0]->cBuffer) lpO[0]->iBuffer=0;
 			}
 
-			OSC_out = do_3band(eq_left_1, v); 
-			
+			OSC_out = do_3band(eq_left_1, v); 			
 		}
 
 		if (synth_params->TRICERATOPS_WAVE_ONE[0]==2) OSC_out = sinewave_osc[0]->tick();
 		if (synth_params->TRICERATOPS_WAVE_ONE[0]==3) OSC_out = nixnoise->tick();
+		
+		if ( route_matrix[route_osc1_amp] > 0.0000001) 
+		{
+			OSC_out *= ( 1 - route_matrix[route_osc1_amp] );
+		}
+
 
 		if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 		{
@@ -821,6 +910,12 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 			if (synth_params->TRICERATOPS_WAVE_ONE[0]==2) OSC_out = sinewave_osc[3]->tick();
 			if (synth_params->TRICERATOPS_WAVE_ONE[0]==3) OSC_out = nixnoise->tick();
 
+			if ( route_matrix[route_osc1_amp] > 0.0000001) 
+			{
+				OSC_out *= ( 1 - route_matrix[route_osc1_amp] );
+			}
+			
+
 			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 			{
 				out_left_1 += (OSC_out *synth_params->TRICERATOPS_VOLUME_ONE[0]) * (1 - OSC1_pan);
@@ -838,7 +933,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 		float OSC2_pan = synth_params->TRICERATOPS_OSC2_PAN[0];
 
-		float routes = route_matrix[route_pan2];
+		float routes = route_matrix[route_osc2_pan];
 
 		OSC2_pan += routes;
 
@@ -886,6 +981,11 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 		if (synth_params->TRICERATOPS_WAVE_TWO[0]==2) OSC_out = sinewave_osc[1]->tick();
 		if (synth_params->TRICERATOPS_WAVE_TWO[0]==3) OSC_out = nixnoise->tick();
+
+		if ( route_matrix[route_osc2_amp] > 0.0000001) 
+		{
+			OSC_out *= ( 1 - route_matrix[route_osc2_amp] );
+		}
 
 		if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 		{
@@ -959,6 +1059,11 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 			if (synth_params->TRICERATOPS_WAVE_TWO[0]==2) OSC_out = sinewave_osc[4]->tick();
 			if (synth_params->TRICERATOPS_WAVE_TWO[0]==3) OSC_out = nixnoise->tick();
+
+			if ( route_matrix[route_osc2_amp] > 0.0000001) 
+			{
+				OSC_out *= ( 1 - route_matrix[route_osc2_amp] );
+			}
 	
 			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 			{
@@ -979,7 +1084,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 		float OSC3_pan = synth_params->TRICERATOPS_OSC3_PAN[0];
 
-		float routes = route_matrix[route_pan3];	
+		float routes = route_matrix[route_osc3_pan];	
 
 		OSC3_pan += routes;
 
@@ -1021,11 +1126,16 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				if (++lpO[2]->iBuffer>=lpO[2]->cBuffer) lpO[2]->iBuffer=0;
 			}
 
-			OSC_out = do_3band(eq_left_3, v);
+			OSC_out += do_3band(eq_left_3, v);
 		}
 
 		if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out = sinewave_osc[2]->tick();
 		if (synth_params->TRICERATOPS_WAVE_THREE[0]==3) OSC_out = nixnoise->tick();
+
+		if ( route_matrix[route_osc3_amp] > 0.0000001) 
+		{
+			OSC_out *= ( 1 - route_matrix[route_osc3_amp] );
+		}
 
 		if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 		{
@@ -1093,11 +1203,16 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 					if (++lpO[5]->iBuffer>=lpO[5]->cBuffer) lpO[5]->iBuffer=0;
 				}
 	
-				OSC_out = do_3band(eq_right_3, v);
+				OSC_out += do_3band(eq_right_3, v);
 			}
 
 			if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out = sinewave_osc[5]->tick();
 			if (synth_params->TRICERATOPS_WAVE_THREE[0]==3) OSC_out = nixnoise->tick();
+
+			if ( route_matrix[route_osc3_amp] > 0.0000001) 
+			{
+				OSC_out *= ( 1 - route_matrix[route_osc3_amp] );
+			}
 
 			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0]==1)
 			{

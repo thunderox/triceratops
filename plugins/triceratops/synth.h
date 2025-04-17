@@ -11,18 +11,21 @@ using namespace std;
 const int route_none = 0;
 const int route_cutoff = 1;
 const int route_res = 2;
-const int route_OSC1 = 3;
-const int route_OSC2 = 4;
-const int route_OSC3 = 5;
-const int route_pw1 = 6;
-const int route_pw2 = 7;
-const int route_pw3 = 8;
-const int route_pan1 = 9;
-const int route_pan2 = 10;
-const int route_pan3 = 11;
+const int route_osc1_pitch = 3;
+const int route_osc2_pitch = 4;
+const int route_osc3_pitch = 5;
+const int route_osc1_pw = 6;
+const int route_osc2_pw = 7;
+const int route_osc3_pw = 8;
+const int route_osc1_pan = 9;
+const int route_osc2_pan = 10;
+const int route_osc3_pan = 11;
 const int route_lfo1_sp = 12;
 const int route_lfo2_sp = 13;
 const int route_lfo3_sp = 14;
+const int route_osc1_amp = 15;
+const int route_osc2_amp = 16;
+const int route_osc3_amp = 17;
 
 // parameters
 
@@ -157,6 +160,10 @@ typedef struct
 	float* TRICERATOPS_CATEGORY;
 	float* TRICERATOPS_PITCH_BEND_RANGE;
 	float* TRICERATOPS_MIDI_CHANNEL;
+
+	float* TRICERATOPS_LFO1_ONESHOT;
+	float* TRICERATOPS_LFO2_ONESHOT;
+	float* TRICERATOPS_LFO3_ONESHOT;
 	
 } params;
 

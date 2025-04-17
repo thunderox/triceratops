@@ -22,7 +22,7 @@ Delirium_UI_Surface* Delirium_UI_Init(int width, int height, int gridX, int grid
 	GUI->current_widget = -1;
 	GUI->draw_flag = true;
 	GUI->drawn_at_least_once = false;
-	
+
 	group new_group;
 	new_group.name = "global";
 	new_group.visible_member = 0;
@@ -132,7 +132,6 @@ int  Delirium_UI_Create_Widget(Delirium_UI_Surface* GUI, int type, int group, fl
 		new_widget = new Delirium_UI_Widget_Tabbed_Navigator();
 		widget_created = true;
 	}
-
 
 
 	if (widget_created)
@@ -301,7 +300,7 @@ void Delirium_UI_Display_All(Delirium_UI_Surface* GUI, cairo_t* cr)
 
 void Delirium_UI_MouseOver(Delirium_UI_Surface* GUI, cairo_t* cr, int mx,int my)
 {
-	
+
 	if (GUI->drag == 0)
 	{
 		Delirium_UI_Mouse_Over(GUI,mx,my);
@@ -351,8 +350,12 @@ void Delirium_UI_MouseOver(Delirium_UI_Surface* GUI, cairo_t* cr, int mx,int my)
 		if (GUI->drag == 1 && !GUI->Widgets[GUI->current_widget]->toggle_mode)
 		{	
 			bool widget_visible = GUI->Widgets[GUI->current_widget]->active;
-			if (widget_visible)
+
+			if (widget_visible && GUI->Widgets[GUI->current_widget]->type != deliriumUI_Selector
+				&& GUI->Widgets[GUI->current_widget]->type != deliriumUI_Filter)
+			{
 				Delirium_UI_Left_Button_Press(GUI,cr,-1,my);
+			}
 		}
 	}	
 }
@@ -375,16 +378,20 @@ void Delirium_UI_Left_Button_Press(Delirium_UI_Surface* GUI, cairo_t* cr, int xm
 		string group_name = GUI->Widgets[current_widget]->tabs_group_name[val];
 		string member_name = GUI->Widgets[current_widget]->tabs_member_name[val];
 		Delirium_UI_Group_Set_Visible_member(GUI, group_name, member_name);
-		GUI->Widgets[current_widget]->pressed = 0;
+		GUI->Widgets[current_widget]->pressed = false;
 		
 	}
 	
 
-	if (xm > -1 && GUI->Widgets[current_widget]->type != deliriumUI_Tabbed_Navigator) GUI->drag = 1 - GUI->drag;
+	if (xm > -1 && GUI->Widgets[current_widget]->type != deliriumUI_Tabbed_Navigator)
+	{
+		if (GUI->Widgets[current_widget]->type == deliriumUI_Fader_Route) cout << ym << endl; 
+		GUI->drag = 1 - GUI->drag;
+	}
 	
 	if (current_widget > -1)
 	{
-		GUI->Widgets[current_widget]->pressed = 1 - GUI->Widgets[current_widget]->pressed;
+		GUI->Widgets[current_widget]->pressed = true;
 		GUI->Widgets[current_widget]->Left_Button_Press(xm,ym);
 		Delirium_UI_Convert_Value_To_Range(GUI,current_widget);
 		
@@ -423,7 +430,7 @@ void Delirium_UI_Middle_Button_Press(Delirium_UI_Surface* GUI)
 
 	if (current_widget > -1)
 	{
-		GUI->Widgets[current_widget]->pressed = 1 - GUI->Widgets[current_widget]->pressed;
+		GUI->Widgets[current_widget]->pressed = true;
 
 		if (GUI->Widgets[current_widget]->pressed)
 		{

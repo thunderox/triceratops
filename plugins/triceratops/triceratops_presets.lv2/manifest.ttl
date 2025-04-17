@@ -38,6 +38,16 @@
 	a pset:Preset ;
 	rdfs:seeAlso <Bass.lv2/Classic_Analogue.ttl> .
 
+<Bass.lv2/Classic_Analogue_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Classic_Analogue_2.ttl> .
+
+<Bass.lv2/Classic_Analogue_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Bass.lv2/Classic_Analogue_3.ttl> .
+
 <Bass.lv2/Early_Bass.ttl>
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
 	a pset:Preset ;
@@ -142,6 +152,88 @@
 	a pset:Preset ;
 	rdfs:seeAlso <Experimental.lv2/Winds_Of_Mars.ttl> .
 
+# HOUSE & RAVE  ---------------------------------------------------------------------------------------------------
+
+<House.lv2/Acid_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Acid_1.ttl> .
+
+<House.lv2/Acid_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Acid_2.ttl> .
+
+<House.lv2/Acid_Overdrive_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Acid_Overdrive_1.ttl> .
+
+<House.lv2/Acid_Overdrive_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Acid_Overdrive_2.ttl> .
+
+<House.lv2/Dominator_Hoover.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Dominator_Hoover.ttl> .
+
+<House.lv2/Dubstep_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Dubstep_1.ttl> .
+
+<House.lv2/Dubstep_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Dubstep_2.ttl> .
+
+<House.lv2/Dubstep_Overdrive_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Dubstep_Overdrive_1.ttl> .
+
+<House.lv2/Dubstep_Overdrive_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Dubstep_Overdrive_2.ttl> .
+
+<House.lv2/House_Bass_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/House_Bass_1.ttl> .
+
+<House.lv2/Jungle_Bass_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Jungle_Bass_1.ttl> .
+
+<House.lv2/Jungle_Bass_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Jungle_Bass_2.ttl> .
+
+<House.lv2/Reese_Bass_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Reese_Bass_1.ttl> .
+
+<House.lv2/Reese_Bass_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Reese_Bass_2.ttl> .
+
+<House.lv2/Reese_Bass_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Reese_Bass_3.ttl> .
+
+<House.lv2/Reese_Bass_4.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <House.lv2/Reese_Bass_4.ttl> .
+
 # KEYS ------------------------------------------------------------------------------------------------------------
 
 
@@ -165,6 +257,20 @@
 	a pset:Preset ;
 	rdfs:seeAlso <Keys.lv2/Selected_Ambient_Piano.ttl> .
 
+<Keys.lv2/Glock_1.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Glock_1.ttl> .
+
+<Keys.lv2/Glock_2.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Glock_2.ttl> .
+
+<Keys.lv2/Glock_3.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Glock_3.ttl> .
 
 # PADS ------------------------------------------------------------------------------------------------------------
 
@@ -188,10 +294,25 @@
 	a pset:Preset ;
 	rdfs:seeAlso <Pads.lv2/Canada_Pad_3.ttl> .
 
+<Pads.lv2/Canada_Pad_4.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Canada_Pad_4.ttl> .
+
+<Pads.lv2/Canada_Pad_5.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Canada_Pad_5.ttl> .
+
 <Pads.lv2/Dirty_Ambient.ttl>
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
 	a pset:Preset ;
 	rdfs:seeAlso <Pads.lv2/Dirty_Ambient.ttl> .
+
+<Pads.lv2/Pulse_Pad.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Pads.lv2/Pulse_Pad.ttl> .
 
 
 # SYNTHS ------------------------------------------------------------------------------------------------------------
@@ -260,6 +381,11 @@
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
 	a pset:Preset ;
 	rdfs:seeAlso <Synths.lv2/SH101_Lead.ttl> .
+
+<Synths.lv2/Weirdo.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Synths.lv2/Weirdo.ttl> .
 
 # VOICES ------------------------------------------------------------------------------------------------------------
 

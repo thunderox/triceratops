@@ -11,7 +11,7 @@ void Delirium_UI_Widget_Tabbed_Navigator::Draw(cairo_t* cr)
 	float wX = x_position * x_grid_size;
 	float wY = y_position * y_grid_size;
 	float wW = width * x_grid_size;
-	float wH = height * y_grid_size;
+	float wH = (height * y_grid_size) + 2;
 
 	cairo_set_source_rgb(cr, 0,0,0); 
 	cairo_rectangle(cr, wX, wY, wW, wH);
@@ -31,7 +31,7 @@ void Delirium_UI_Widget_Tabbed_Navigator::Draw(cairo_t* cr)
 		float x_text_centred = (wX + wW / 2) - extents.width / 2;
 		if (x == values[1]) cairo_set_source_rgb(cr, 1, 1, 1); 
 			else cairo_set_source_rgb(cr, 0.6,0.6,0.6); 
-		cairo_move_to(cr,wX + (xply*0.25)+(xply*x), wY + (font_size * 1.5));
+		cairo_move_to(cr,wX + (xply*0.25)+(xply*x), wY + (font_size * 1.25));
 		cairo_show_text(cr, tabs[x].c_str());
 	}
 }

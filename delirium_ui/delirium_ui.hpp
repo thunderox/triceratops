@@ -13,7 +13,7 @@
 #ifndef DELIRIUM_UI
 #define DELIRIUM_UI
 
-const float font_size = 10;
+const float font_size = 12;
 const int WAVE_MODE_OSC = 1;
 const int WAVE_MODE_LFO = 2;
 

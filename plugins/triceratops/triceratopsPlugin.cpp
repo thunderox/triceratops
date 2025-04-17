@@ -17,7 +17,7 @@
 
 using namespace std;
 
-const int max_notes = 12;
+const int max_notes = 18;
 
 START_NAMESPACE_DISTRHO
 
@@ -70,6 +70,18 @@ class triceratopsPlugin : public Plugin
 		float lfo1_rand;
 		float lfo2_rand;
 		float lfo3_rand;
+
+		bool lfo1_active = true;
+		bool lfo2_active = true;
+		bool lfo3_active = true;
+
+		int lfo1_cycle = 0;
+		int lfo2_cycle = 0;
+		int lfo3_cycle = 0;
+
+		float lfo1_final_out = 0;
+		float lfo2_final_out = 0;
+		float lfo3_final_out = 0;
 		
 
 			
@@ -173,7 +185,7 @@ class triceratopsPlugin : public Plugin
     
 		uint32_t getVersion() const override
 		{
-			return d_version(0, 7, 0);
+			return d_version(0, 8, 1);
 		}
 
 		int64_t getUniqueId() const
@@ -423,6 +435,9 @@ class triceratopsPlugin : public Plugin
 				case TRICERATOPS_LFO1_RETRIG:
 					set_param (parameter, "TRICERATOPS_LFO1_RETRIG", index, 0.0f, 1.0f, 0.0f);
 					break;
+				case TRICERATOPS_LFO1_ONESHOT:
+					set_param (parameter, "TRICERATOPS_LFO1_ONESHOT" , index, 0.0f, 1.0f, 0.0f);
+					break;	
 				case TRICERATOPS_LFO1_SPEED:
 					set_param (parameter, "TRICERATOPS_LFO1_SPEED", index, 0.0f, 680.0f, 120.0f);
 					break;
@@ -459,6 +474,9 @@ class triceratopsPlugin : public Plugin
 				case TRICERATOPS_LFO2_RETRIG:
 					set_param (parameter, "TRICERATOPS_LFO2_RETRIG" , index, 0.0f, 1.0f, 0.0f);
 					break;
+				case TRICERATOPS_LFO2_ONESHOT:
+					set_param (parameter, "TRICERATOPS_LFO2_ONESHOT" , index, 0.0f, 1.0f, 0.0f);
+					break;	
 				case TRICERATOPS_LFO2_SPEED:
 					set_param (parameter, "TRICERATOPS_LFO2_SPEED" , index, 0.0f, 680.0f, 120.0f);
 					break;
@@ -495,6 +513,9 @@ class triceratopsPlugin : public Plugin
 				case TRICERATOPS_LFO3_RETRIG:
 					set_param (parameter, "TRICERATOPS_LFO3_RETRIG" , index, 0.0f, 1.0f, 0.0f);
 					break;
+				case TRICERATOPS_LFO3_ONESHOT:
+					set_param (parameter, "TRICERATOPS_LFO3_ONESHOT" , index, 0.0f, 1.0f, 0.0f);
+					break;	
 				case TRICERATOPS_LFO3_SPEED:
 					set_param (parameter, "TRICERATOPS_LFO3_SPEED" , index, 0.0f, 680.0f, 120.0f);
 					break;				
@@ -709,6 +730,10 @@ class triceratopsPlugin : public Plugin
 						if (key_frequency > 18000) key_frequency = 18000;
 						
 						synths[current_synth].osc_frequency = key_frequency;	
+
+						lfo1_active = true;
+						lfo2_active = true;	
+						lfo3_active = true;
 						
 						// IN LEGATO MODE ONLY USE INERTIA PORTAMENTO WHEN KEYS HELD DOWN	
 						
@@ -734,9 +759,9 @@ class triceratopsPlugin : public Plugin
 								&& synths[current_synth].env_amp_state != synths[current_synth].env_state_dormant)
 						{
 	
-							if (fParameters[TRICERATOPS_LFO1_RETRIG] == 1) { lfo1->phase = 0; lfo1_count = 0; }
-							if (fParameters[TRICERATOPS_LFO2_RETRIG] == 1) { lfo2->phase = 0; lfo2_count = 0; }
-							if (fParameters[TRICERATOPS_LFO3_RETRIG] == 1) { lfo3->phase = 0; lfo3_count = 0; }		
+							if (fParameters[TRICERATOPS_LFO1_RETRIG] == 1) { lfo1->phase = 0; lfo1_count = 0; lfo1_cycle = 0;}
+							if (fParameters[TRICERATOPS_LFO2_RETRIG] == 1) { lfo2->phase = 0; lfo2_count = 0; lfo1_cycle = 0;}
+							if (fParameters[TRICERATOPS_LFO3_RETRIG] == 1) { lfo3->phase = 0; lfo3_count = 0; lfo1_cycle = 0;}		
 						}
 						else
 						{
@@ -771,9 +796,9 @@ class triceratopsPlugin : public Plugin
 							synths[current_synth].inertia_two.value = synths[old_synth].inertia_two.value;
 							synths[current_synth].inertia_three.value = synths[old_synth].inertia_three.value;
 
-							if (fParameters[TRICERATOPS_LFO1_RETRIG] == 1) { lfo1->phase = 0; lfo1_count = 0; }
-							if (fParameters[TRICERATOPS_LFO2_RETRIG] == 1) { lfo2->phase = 0; lfo2_count = 0; }
-							if (fParameters[TRICERATOPS_LFO3_RETRIG] == 1) { lfo3->phase = 0; lfo3_count = 0; }
+							if (fParameters[TRICERATOPS_LFO1_RETRIG] == 1) { lfo1->phase = 0; lfo1_count = 0; lfo1_cycle = 0;}
+							if (fParameters[TRICERATOPS_LFO2_RETRIG] == 1) { lfo2->phase = 0; lfo2_count = 0; lfo1_cycle = 0;}
+							if (fParameters[TRICERATOPS_LFO3_RETRIG] == 1) { lfo3->phase = 0; lfo3_count = 0; lfo1_cycle = 0;}
 		
 							old_synth = current_synth;
 						}		
@@ -890,69 +915,109 @@ class triceratopsPlugin : public Plugin
 			{
 				// DO LFO1
 
-				if (lfo1_count == 0) {lfo1_rand = nixnoise->tick();  }
-
-				if (lfo1_wave < 3) lfo1_out[x] = lfo1->tick();
-				if (lfo1_wave == 5 || lfo1_wave == 6) lfo1_out[x] = 1 - lfo1->tick();
-
-				if (lfo1_wave == 3)
+				if (lfo1_active)
 				{
-					float dummy = lfo1->tick(); // keeps other LFO waveforms on tempo;
-					lfo1_out[x] = lfo1_rand;
-				}
+					if (lfo1_count == 0) lfo1_rand = nixnoise->tick();  
 
-				if (lfo1_wave == 4)
-				{
-					float dummy = lfo1->tick(); // keeps other LFO waveforms on tempo;
-					lfo1_out[x] = nixnoise->tick();
-				}
+					if (lfo1_wave < 3) lfo1_out[x] = lfo1->tick();
+					if (lfo1_wave == 5 || lfo1_wave == 6) lfo1_out[x] = -lfo1->tick();
+
+					if (lfo1_wave == 3)
+					{
+						float dummy = lfo1->tick(); // keeps other LFO waveforms on tempo;
+						lfo1_out[x] = lfo1_rand;
+					}
+
+					if (lfo1_wave == 4)
+					{
+						float dummy = lfo1->tick(); // keeps other LFO waveforms on tempo;
+						lfo1_out[x] = nixnoise->tick();
+					}
+				} else { lfo1_out[x] = lfo1_final_out; }
 				
 				// DO LFO2
 
-				if (lfo2_count == 0) lfo2_rand = nixnoise->tick();
-				if (lfo2_wave == 5 || lfo2_wave == 6) lfo2_out[x] = 1 - lfo2->tick();
-
-				if (lfo2_wave < 3) lfo2_out[x] = lfo2->tick();
-
-				if (lfo2_wave == 3)
+				if (lfo2_active)
 				{
-					float dummy = lfo2->tick(); // keeps other LFO waveforms on tempo;
-					lfo2_out[x] = lfo2_rand;
-				}
 
-				if (lfo2_wave == 4)
-				{
-					float dummy = lfo2->tick(); // keeps other LFO waveforms on tempo;
-					lfo2_out[x] = nixnoise->tick();
-				}
+					if (lfo2_count == 0) lfo2_rand = nixnoise->tick();
+
+					if (lfo2_wave == 5 || lfo2_wave == 6) lfo2_out[x] = 1 - lfo2->tick();
+
+					if (lfo2_wave < 3) lfo2_out[x] = lfo2->tick();
+
+					if (lfo2_wave == 3)
+					{
+						float dummy = lfo2->tick(); // keeps other LFO waveforms on tempo;
+						lfo2_out[x] = lfo2_rand;
+					}
+
+					if (lfo2_wave == 4)
+					{
+						float dummy = lfo2->tick(); // keeps other LFO waveforms on tempo;
+						lfo2_out[x] = nixnoise->tick();
+					}
+				} else { lfo2_out[x] = lfo2_final_out; }
+
 
 				// DO LFO3
 
-				if (lfo3_count == 0) lfo3_rand = nixnoise->tick();
-
-				if (lfo3_wave < 3) lfo3_out[x] = lfo3->tick();
-				if (lfo3_wave == 5 || lfo3_wave == 6) lfo3_out[x] = 1 - lfo3->tick();
-
-				if (lfo3_wave == 3)
+				if (lfo3_active)
 				{
-					float dummy = lfo3->tick(); // keeps other LFO waveforms on tempo;
-					lfo3_out[x] = lfo3_rand;
-				}
 
-				if (lfo3_wave == 4)
-				{
-					float dummy = lfo3->tick(); // keeps other LFO waveforms on tempo;
-					lfo3_out[x] = nixnoise->tick();
-				}
+					if (lfo3_count == 0) lfo3_rand = nixnoise->tick();
+
+					if (lfo3_wave < 3) lfo3_out[x] = lfo3->tick();
+					if (lfo3_wave == 5 || lfo3_wave == 6) lfo3_out[x] = 1 - lfo3->tick();
+
+					if (lfo3_wave == 3)
+					{
+						float dummy = lfo3->tick(); // keeps other LFO waveforms on tempo;
+						lfo3_out[x] = lfo3_rand;
+					}
+
+					if (lfo3_wave == 4)
+					{
+						float dummy = lfo3->tick(); // keeps other LFO waveforms on tempo;
+						lfo3_out[x] = nixnoise->tick();
+					}
+				} else { lfo3_out[x] = lfo3_final_out ; }
+
 
 				++lfo1_count;
-				if (lfo1_count > lfo1_speed) lfo1_count = 0;
+
+				if (lfo1_count > (lfo1_speed * 2) - (lfo1_speed/64) && fParameters[TRICERATOPS_LFO1_ONESHOT] == 1)
+					{ lfo1_final_out = lfo1_out[x]; lfo1_active = false; }
+
+				if (lfo1_count > lfo1_speed * 2)
+				{
+					lfo1_cycle = 0;
+
+				}
 
 				++lfo2_count;
-				if (lfo2_count > lfo2_speed) lfo2_count= 0;
+				if (lfo2_count > lfo2_speed * 2)
+				{
+					lfo2_count = 0;
+					lfo2_cycle ++;
+					if (lfo2_cycle >= 2)
+					{
+						if (fParameters[TRICERATOPS_LFO2_ONESHOT] == 1) { lfo2_final_out = lfo2_out[x]; lfo2_active = false; }
+						lfo2_cycle = 0;
+					}
+				}
 
 				++lfo3_count;
-				if (lfo3_count > lfo3_speed) lfo3_count = 0;
+				if (lfo3_count > lfo3_speed * 2)
+				{
+					lfo3_count = 0;
+					lfo3_cycle ++;
+					if (lfo3_cycle >= 2)
+					{
+						if (fParameters[TRICERATOPS_LFO3_ONESHOT] == 1) { lfo3_final_out = lfo3_out[x]; lfo3_active = false; }
+						lfo3_cycle = 0;
+					}
+				}
 			
 				if (isnan( out_left[x] )) out_left[x] = 0;
 				if (isnan( out_right[x] )) out_right[x] = 0;
@@ -1071,6 +1136,7 @@ Plugin* createPlugin()
 		triceratops->synths[x].synth_params->TRICERATOPS_ADSR3_LFO3_AMOUNT = &triceratops->fParameters[TRICERATOPS_ADSR3_LFO3_AMOUNT];
 		
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO1_RETRIG = &triceratops->fParameters[TRICERATOPS_LFO1_RETRIG];
+		triceratops->synths[x].synth_params->TRICERATOPS_LFO1_ONESHOT = &triceratops->fParameters[TRICERATOPS_LFO1_ONESHOT];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO1_SPEED = &triceratops->fParameters[TRICERATOPS_LFO1_SPEED];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO1_WAVE = &triceratops->fParameters[TRICERATOPS_LFO1_WAVE];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO1_OSC1_AMOUNT = &triceratops->fParameters[TRICERATOPS_LFO1_OSC1_AMOUNT];
@@ -1083,6 +1149,7 @@ Plugin* createPlugin()
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO1_ROUTE_TWO_DEST = &triceratops->fParameters[TRICERATOPS_LFO1_ROUTE_TWO_DEST];
 		
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO2_RETRIG = &triceratops->fParameters[TRICERATOPS_LFO2_RETRIG];
+		triceratops->synths[x].synth_params->TRICERATOPS_LFO2_ONESHOT = &triceratops->fParameters[TRICERATOPS_LFO2_ONESHOT];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO2_SPEED = &triceratops->fParameters[TRICERATOPS_LFO2_SPEED];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO2_WAVE = &triceratops->fParameters[TRICERATOPS_LFO2_WAVE];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO2_OSC1_AMOUNT = &triceratops->fParameters[TRICERATOPS_LFO2_OSC1_AMOUNT];
@@ -1095,6 +1162,7 @@ Plugin* createPlugin()
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO2_ROUTE_TWO_DEST = &triceratops->fParameters[TRICERATOPS_LFO2_ROUTE_TWO_DEST];
 		
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO3_RETRIG = &triceratops->fParameters[TRICERATOPS_LFO3_RETRIG];
+		triceratops->synths[x].synth_params->TRICERATOPS_LFO3_ONESHOT = &triceratops->fParameters[TRICERATOPS_LFO3_ONESHOT];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO3_SPEED = &triceratops->fParameters[TRICERATOPS_LFO3_SPEED];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO3_WAVE = &triceratops->fParameters[TRICERATOPS_LFO3_WAVE];
 		triceratops->synths[x].synth_params->TRICERATOPS_LFO3_OSC1_AMOUNT = &triceratops->fParameters[TRICERATOPS_LFO3_OSC1_AMOUNT];

@@ -22,13 +22,13 @@ class triceratopsUI : public UI
 
 		//------------------------------------------------------------------------------------------------------
 
-		triceratopsUI() : UI(960, 460)
+		triceratopsUI() : UI(980, 460)
 		{
 
 			memset(fParameters, 0, sizeof(float)*kParameterCount);
 			memset(fParameters_widget_number, -1, sizeof(int)*kParameterCount);
 
-			GUI = Delirium_UI_Init(static_cast<float>(getWidth()),static_cast<float>(getHeight()), 40,30);
+			GUI = Delirium_UI_Init(static_cast<float>(getWidth()),static_cast<float>(getHeight()), 38,30);
 			
 			// OSCILATOR PANEL
 			
@@ -44,7 +44,7 @@ class triceratopsUI : public UI
 			int osc_panel = Delirium_UI_Create_Widget(GUI, deliriumUI_Panel, 0, panelX, panelY, 19,6.5, "OSCILLATORS", -1);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, osc_panel, "global", "");
 			
-			int widget_logo = Delirium_UI_Create_Widget(GUI, deliriumUI_Logo, 0, panelX + 13.5, panelY + 1.25, 3.5, 6, "", -1);
+			int widget_logo = Delirium_UI_Create_Widget(GUI, deliriumUI_Logo, 0, panelX + 13.5, panelY + 1.25, 4, 6.5, "", -1);
 			GUI->Widgets[widget_logo]->logo_image = cairo_image_surface_create_from_png ("/usr/lib/lv2/triceratops.lv2/logo.png");
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_logo, "global", "");
 						
@@ -109,7 +109,7 @@ class triceratopsUI : public UI
 			
 			int widget_osc1_wave = Delirium_UI_Create_Widget(GUI, deliriumUI_Selector, 0, panelX + 8, panelY + 1.25, 2, 2.5,"WAVE", TRICERATOPS_OSC1_WAVE);
 			Delirium_UI_Widget_Set_Selector_Type(GUI, widget_osc1_wave, WAVE_MODE_OSC);
-			Delirium_UI_Widget_Set_Min_Max(GUI, widget_osc1_wave, 0,5);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_osc1_wave, 0,3);
 			Delirium_UI_Widget_Set_Value(GUI, widget_osc1_wave, 0);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_osc1_wave, "oscillators", "osc1");
 			fParameters_widget_number[TRICERATOPS_OSC1_WAVE] = widget_osc1_wave; 
@@ -184,7 +184,7 @@ class triceratopsUI : public UI
 			int widget_osc2_wave = Delirium_UI_Create_Widget(GUI, deliriumUI_Selector, 0, panelX + 8, panelY + 1.25, 2, 2.5,"WAVE", TRICERATOPS_OSC2_WAVE);
 			Delirium_UI_Widget_Set_Selector_Type(GUI, widget_osc2_wave, WAVE_MODE_OSC);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_osc2_wave, "oscillators", "osc2");
-			Delirium_UI_Widget_Set_Min_Max(GUI, widget_osc2_wave, 0,5);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_osc2_wave, 0,3);
 			Delirium_UI_Widget_Set_Value(GUI, widget_osc2_wave, 0);
 			fParameters_widget_number[TRICERATOPS_OSC2_WAVE] = widget_osc2_wave; 
 			
@@ -258,7 +258,7 @@ class triceratopsUI : public UI
 			
 			int widget_osc3_wave = Delirium_UI_Create_Widget(GUI, deliriumUI_Selector, 0, panelX + 8, panelY + 1.25, 2, 2.5,"WAVE", TRICERATOPS_OSC3_WAVE);
 			Delirium_UI_Widget_Set_Selector_Type(GUI, widget_osc3_wave, WAVE_MODE_OSC);
-			Delirium_UI_Widget_Set_Min_Max(GUI, widget_osc3_wave, 0,5);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_osc3_wave, 0,3);
 			Delirium_UI_Widget_Set_Value(GUI, widget_osc3_wave, 0);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_osc3_wave, "oscillators", "osc3");
 			fParameters_widget_number[TRICERATOPS_OSC3_WAVE] = widget_osc3_wave; 
@@ -356,6 +356,12 @@ class triceratopsUI : public UI
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo1_retrig, "lfos", "lfo1");
 			fParameters_widget_number[TRICERATOPS_LFO1_RETRIG] = widget_lfo1_retrig; 
 
+			int widget_lfo1_oneshot = Delirium_UI_Create_Widget(GUI, deliriumUI_Switch, 0, panelX + 17.0, panelY + 1.25, 2, 2, "1S", TRICERATOPS_LFO1_ONESHOT);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo1_oneshot, 0,1);
+			Delirium_UI_Widget_Set_Value(GUI, widget_lfo1_oneshot, 0);
+			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo1_oneshot, "lfos", "lfo1");
+			fParameters_widget_number[TRICERATOPS_LFO1_ONESHOT] = widget_lfo1_oneshot;
+
 			int widget_lfo1_speed = Delirium_UI_Create_Widget(GUI, deliriumUI_Knob, 0, panelX + 0.5, panelY + 4, 2, 2.5, "BPM", TRICERATOPS_LFO1_SPEED);
 			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo1_speed, 1,600);
 			Delirium_UI_Widget_Set_Value(GUI, widget_lfo1_speed, 120);
@@ -367,6 +373,7 @@ class triceratopsUI : public UI
 			
 			int widget_lfo1_wave = Delirium_UI_Create_Widget(GUI, deliriumUI_Selector, 0, panelX + 2.5, panelY + 1.25, 2, 2.5,"WAVE", TRICERATOPS_LFO1_WAVE);
 			Delirium_UI_Widget_Set_Selector_Type(GUI, widget_lfo1_wave, WAVE_MODE_LFO);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo1_wave, 0,6);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo1_wave, "lfos", "lfo1");
 			fParameters_widget_number[TRICERATOPS_LFO1_WAVE] = widget_lfo1_wave;
 
@@ -416,6 +423,12 @@ class triceratopsUI : public UI
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo2_retrig, "lfos", "lfo2");
 			fParameters_widget_number[TRICERATOPS_LFO2_RETRIG] = widget_lfo2_retrig; 
 
+			int widget_lfo2_oneshot = Delirium_UI_Create_Widget(GUI, deliriumUI_Switch, 0, panelX + 17.0, panelY + 1.25, 2, 2, "1S", TRICERATOPS_LFO2_ONESHOT);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo2_oneshot, 0,1);
+			Delirium_UI_Widget_Set_Value(GUI, widget_lfo2_oneshot, 0);
+			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo2_oneshot, "lfos", "lfo2");
+			fParameters_widget_number[TRICERATOPS_LFO2_ONESHOT] = widget_lfo2_oneshot;
+
 			int widget_lfo2_speed = Delirium_UI_Create_Widget(GUI, deliriumUI_Knob, 0, panelX + 0.5, panelY + 4, 2, 2.5, "BPM", TRICERATOPS_LFO2_SPEED);
 			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo2_speed, 0,600);
 			Delirium_UI_Widget_Set_Value(GUI, widget_lfo2_speed, 120);
@@ -427,6 +440,7 @@ class triceratopsUI : public UI
 			
 			int widget_lfo2_wave = Delirium_UI_Create_Widget(GUI, deliriumUI_Selector, 0, panelX + 2.5, panelY + 1.25, 2, 2.5,"WAVE", TRICERATOPS_LFO2_WAVE);
 			Delirium_UI_Widget_Set_Selector_Type(GUI, widget_lfo2_wave, WAVE_MODE_LFO);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo2_wave, 0,6);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo2_wave, "lfos", "lfo2");
 			fParameters_widget_number[TRICERATOPS_LFO2_WAVE] = widget_lfo2_wave;
 
@@ -478,6 +492,12 @@ class triceratopsUI : public UI
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo3_retrig, "lfos", "lfo3");
 			fParameters_widget_number[TRICERATOPS_LFO3_RETRIG] = widget_lfo3_retrig; 
 
+			int widget_lfo3_oneshot = Delirium_UI_Create_Widget(GUI, deliriumUI_Switch, 0, panelX + 17.0, panelY + 1.25, 2, 2, "1S", TRICERATOPS_LFO3_ONESHOT);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo3_oneshot, 0,1);
+			Delirium_UI_Widget_Set_Value(GUI, widget_lfo3_oneshot, 0);
+			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo3_oneshot, "lfos", "lfo3");
+			fParameters_widget_number[TRICERATOPS_LFO3_ONESHOT] = widget_lfo3_oneshot;
+
 			int widget_lfo3_speed = Delirium_UI_Create_Widget(GUI, deliriumUI_Knob, 0, panelX + 0.5, panelY + 4, 2, 2.5, "BPM", TRICERATOPS_LFO3_SPEED);
 			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo3_speed, 0,600);
 			Delirium_UI_Widget_Set_Value(GUI, widget_lfo3_speed, 120);
@@ -489,6 +509,7 @@ class triceratopsUI : public UI
 			
 			int widget_lfo3_wave = Delirium_UI_Create_Widget(GUI, deliriumUI_Selector, 0, panelX + 2.5, panelY + 1.25, 2, 2.5,"WAVE", TRICERATOPS_LFO3_WAVE);
 			Delirium_UI_Widget_Set_Selector_Type(GUI, widget_lfo3_wave, WAVE_MODE_LFO);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_lfo3_wave, 0,6);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_lfo3_wave, "lfos", "lfo3");
 			fParameters_widget_number[TRICERATOPS_LFO3_WAVE] = widget_lfo3_wave;
 			
@@ -1046,10 +1067,6 @@ class triceratopsUI : public UI
 				}				
 			}	
 
-
-
-
-
 			for (int x=0; x<preset_folders.size(); x++)
 			{
 
@@ -1064,7 +1081,6 @@ class triceratopsUI : public UI
 						if (d->d_name != "." && d->d_name != "..")
 						{
 							is_triceratops_preset = true;
-							cout << preset_folders[x] << " - " << d->d_name << endl;
 						}
 	
 						ifstream preset_file( preset_folders[x] + "/" + d->d_name, ios::in);
@@ -1107,22 +1123,13 @@ class triceratopsUI : public UI
 									
 								}	
 							}
-						}
-								
+						}			
 
 					}
+				}
 			}
-		}
 
 
-
-
-
-
-
-
-	
-			
 			sort(categories.begin(),categories.end(),alphasort_category());
 			
 			for (int x=0; x<categories.size(); x++)
@@ -1270,9 +1277,13 @@ class triceratopsUI : public UI
 
 		bool onMouse(const MouseEvent& ev) override
 		{
-			
+		
+			if (ev.button == 1 && !ev.press)
+			{
+				GUI->drag = false;
+			}
 
-			if (ev.button == 1)
+			if (ev.button == 1 && ev.press)
 			{
 				Delirium_UI_MouseOver(GUI, cr, ev.pos.getX(), ev.pos.getY());
 				Delirium_UI_Left_Button_Press(GUI, cr, ev.pos.getX(), ev.pos.getY());
@@ -1337,7 +1348,7 @@ class triceratopsUI : public UI
 			}
 
 
-			if (ev.button == 2) 
+			if (ev.button == 2 && ev.press) 
 			{
 				int cw = GUI->current_widget;
 				if (cw > -1) 
@@ -1348,7 +1359,7 @@ class triceratopsUI : public UI
 			}
 
 
-			if (ev.button == 3)
+			if (ev.button == 3 && ev.press)
 			{
 
 				int parameter_number = Delirium_UI_Widget_Get_Parameter_Number(GUI);
@@ -1566,7 +1577,7 @@ class triceratopsUI : public UI
 		
 		int widget_categories_list;
 		int widget_presets_list;
-		int current_category;
+		int current_category = 0;
 
 
 		struct alphasort_category

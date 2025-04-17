@@ -16,6 +16,8 @@ void Delirium_UI_Widget_Selector::Draw(cairo_t* cr)
 	float w = width * x_grid_size;
 	float h = height * y_grid_size;
 
+	increment = 1;
+
 	cairo_set_source(cr, theme_background_grad);
 	cairo_rectangle(cr, x, y, w, h);
 	cairo_fill(cr);
@@ -339,20 +341,11 @@ void Delirium_UI_Widget_Selector::Left_Button_Press(int xm, int ym)
 	float y = y_position * y_grid_size;
 	float w = width * x_grid_size;
 	float h = height * y_grid_size;
-		
-	toggle_mode = 1 - toggle_mode;
-	int max_value;
-	
-	if (wave_mode == WAVE_MODE_OSC) max_value = 3;
-		else max_value = 6;
-	
 
-	if (toggle_mode==0) 
-	{
-		values[current_value]++;
-		if (values[current_value] > max_value) values[current_value]=0;
-		Convert_Scaled_To_Value();
-	}
+	values[current_value]++;
+	if (values[current_value] > max) values[current_value]=0;
+	Convert_Scaled_To_Value();
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------

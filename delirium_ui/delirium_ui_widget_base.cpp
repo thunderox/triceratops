@@ -65,8 +65,11 @@ void Delirium_UI_Widget_Base::Mouse_Over(int xm, int ym)
 
 void Delirium_UI_Widget_Base::Mouse_Scroll(int mx,int my, float delta)
 {
-
 	double inc = increment;
+
+	if (type == deliriumUI_Selector || type == deliriumUI_Filter)
+		delta = -delta;
+
 	if (fine_increment) inc *= 0.1;
 
 	if (type != deliriumUI_Knob)
@@ -101,6 +104,8 @@ void Delirium_UI_Widget_Base::Mouse_Scroll(int mx,int my, float delta)
 			if (values[current_value] <= max) values[current_value] = max;
 		}		
 	}
+
+
 
 
 	Convert_Scaled_To_Value();
