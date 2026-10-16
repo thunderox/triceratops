@@ -9,6 +9,7 @@
 <>
 	a pset:Preset ;
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	pset:bank <Pads> ;
 	rdfs:label "Canada Pad 5" ;
 	lv2:port [
 		lv2:symbol "TRICERATOPS_ADSR1_ATTACK" ;

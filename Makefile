@@ -64,7 +64,7 @@ install:
 uninstall:
 	rm ~/.config/thunderox -R
 	rm /usr/lib/lv2/triceratops.lv2 -rf
-	rm /usr/lib/lv2/plugins/triceratops/triceratops_presets.lv2 -rf
+	rm /usr/lib/lv2/triceratops/triceratops_presets.lv2 -rf
 	rm /usr/lib/dssi/triceratops.dssi -rf
 	rm /usr/lib/dssi/triceratops-dssi.so -f
 	rm /usr/lib/vst/triceratops-vst.so -f

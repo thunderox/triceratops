@@ -9,6 +9,7 @@
 <>
 	a pset:Preset ;
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	pset:bank <Bass> ;
 	rdfs:label "Classic Analogue 3" ;
 	lv2:port [
 		lv2:symbol "TRICERATOPS_ADSR1_ATTACK" ;

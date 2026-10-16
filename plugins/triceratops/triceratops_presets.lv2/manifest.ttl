@@ -241,7 +241,13 @@
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
 	a pset:Preset ;
 	rdfs:seeAlso <Keys.lv2/Electric_Piano.ttl> .
+	
 
+<Keys.lv2/Funky_Clav.ttl>
+	lv2:appliesTo <http://thunderox.com/triceratops> ;
+	a pset:Preset ;
+	rdfs:seeAlso <Keys.lv2/Funky_Clav.ttl> .
+	
 <Keys.lv2/Funky_Clav.ttl>
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
 	a pset:Preset ;

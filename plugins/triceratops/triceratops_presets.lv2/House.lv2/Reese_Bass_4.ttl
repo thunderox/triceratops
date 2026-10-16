@@ -9,8 +9,8 @@
 <>
 	a pset:Preset ;
 	lv2:appliesTo <http://thunderox.com/triceratops> ;
-	rdfs:label "Reese_Bass_4" ;
 	pset:bank <House_&_Rave> ;
+	rdfs:label "Reese_Bass_4" ;
 	lv2:port [
 		lv2:symbol "TRICERATOPS_ADSR1_ATTACK" ;
 		pset:value 1.0
