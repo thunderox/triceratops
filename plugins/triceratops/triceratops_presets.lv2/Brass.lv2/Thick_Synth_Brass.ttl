@@ -9,7 +9,7 @@
 <>
 	a pset:Preset ;
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
-	rdfs:label "ultra new brass" ;
+	rdfs:label "Thick_Synth_Brass" ;
 	pset:bank <Brass> ;
 	rdfs:label "Thick Synth Brass" ;
 	lv2:port [

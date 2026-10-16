@@ -1,4 +1,4 @@
-
+ 
 // ThunderOx Triceratops synth - By Nick S. Bailey <tb303@gmx.com>
 // DISTRHO Plugin Framework (DPF) Copyright (C) 2012-2019 Filipe Coelho <falktx@falktx.com>
 
@@ -917,7 +917,11 @@ class triceratopsPlugin : public Plugin
 
 				if (lfo1_active)
 				{
-					if (lfo1_count == 0) lfo1_rand = nixnoise->tick();  
+					if (lfo1_count == 0)
+					{
+						lfo1_rand = nixnoise->tick();  
+					}
+						
 
 					if (lfo1_wave < 3) lfo1_out[x] = lfo1->tick();
 					if (lfo1_wave == 5 || lfo1_wave == 6) lfo1_out[x] = -lfo1->tick();
@@ -992,6 +996,7 @@ class triceratopsPlugin : public Plugin
 				if (lfo1_count > lfo1_speed * 2)
 				{
 					lfo1_cycle = 0;
+					lfo1_count = 0;
 
 				}
 

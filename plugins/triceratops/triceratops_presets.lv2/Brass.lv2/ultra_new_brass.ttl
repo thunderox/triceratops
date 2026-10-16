@@ -10,6 +10,7 @@
 	a pset:Preset ;
 	lv2:appliesTo <http://thunderox.com/thunderox_triceratops> ;
 	rdfs:label "ultra new brass" ;
+	pset:bank <Brass> ;
 	lv2:port [
 		lv2:symbol "TRICERATOPS_OSC1_ACTIVE" ;
 		pset:value 1.0
