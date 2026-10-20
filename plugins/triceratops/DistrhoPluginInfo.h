@@ -151,6 +151,7 @@ enum Parameters {
 	TRICERATOPS_LFO3_ONESHOT,
 
 	TRICERATOPS_DSP_RUN,
+	TRICERATOPS_FX_CHORUS_ACTIVE,
 
 	kParameterBufferSize,
 	kParametertriceratopsTime,        

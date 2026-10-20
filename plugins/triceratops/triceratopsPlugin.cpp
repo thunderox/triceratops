@@ -12,7 +12,9 @@
 #include "lfo.h"
 #include "nix-echo.hpp"
 #include "JCRev.h"
+#include "chorus.hpp"
 #include "eq.h"
+#include "SmoothVerb.h"
 
 
 using namespace std;
@@ -49,7 +51,9 @@ class triceratopsPlugin : public Plugin
 		noise* nixnoise;
 		JCRev* reverb[16];
 		
-
+		SmoothVerb verb;
+		chorus new_chorus;
+		chorus new_chorus2;
 
 		uint32_t buffer_frame;
 		
@@ -131,6 +135,25 @@ class triceratopsPlugin : public Plugin
 				reverb[x]->clear();
 				reverb[x]->setEffectMix(1.0);
 			}
+			
+			
+			verb.prepare(srate);
+			
+			new_chorus2.frequency_one_inc = 0.0000005;
+			new_chorus2.frequency_two_inc = 0.0000001;
+
+			// Set from your parameters (any thread-safe path; values are smoothed):
+			verb.setDecay(2.5f);        // RT60 in seconds        0.1 .. 30
+			verb.setSize(1.0f);         // room size scale        0.5 .. 2.0
+			verb.setDamping(6000.f);    // HF damping cutoff, Hz  500 .. 20000
+			verb.setDiffusion(0.9f);    // input diffusion        0 .. 1
+			verb.setModulation(0.25f);   // anti-ring modulation   0 .. 1
+			verb.setPreDelay(15.f);     // milliseconds           0 .. 200
+			verb.setWidth(1.0f);        // stereo width           0 .. 1
+			verb.setMix(0.5f);         // dry/wet                0 .. 1
+			
+
+			
 			
 			for (int x=0; x<128; x++) { midi_keys[x] = -1; }
 			
@@ -583,7 +606,11 @@ class triceratopsPlugin : public Plugin
 					break;
 				case kParametertriceratopsTime:
 					set_param (parameter, "kParametertriceratopsTime" , index, 0.0f, 1.0f, 0.5f);
-					break;		
+					break;	
+					
+				case TRICERATOPS_FX_CHORUS_ACTIVE:
+					set_param (parameter, "TRICERATOPS_FX_CHORUS_ACTIVE", index, -9.0f, 2.0f, 0.0f);
+					break;	
 					
 				// ECHO ----------------------------------------------------------------------
 					
@@ -612,10 +639,10 @@ class triceratopsPlugin : public Plugin
 					set_param (parameter, "TRICERATOPS_FX_REVERB_ACTIVE" , index, 0.0f, 1.0f, 0.0f);
 					break;	
 				case TRICERATOPS_FX_REVERB_DECAY:
-					set_param (parameter, "TRICERATOPS_FX_REVERB_DECAY" , index, 0.0f, 15.0f, 4.0f);
+					set_param (parameter, "TRICERATOPS_FX_REVERB_DECAY" , index, 0.0f, 30.0f, 4.0f);
 					break;	
 				case TRICERATOPS_FX_REVERB_MIX:
-					set_param (parameter, "TRICERATOPS_FX_REVERB_MIX" , index, 0.0f, 0.8f, 0.0f);
+					set_param (parameter, "TRICERATOPS_FX_REVERB_MIX" , index, 0.0f, 1.0f, 0.5f);
 					break;	
 
 			}
@@ -656,8 +683,10 @@ class triceratopsPlugin : public Plugin
 			float* out_left = outputs[0];
 			float* out_right = outputs[1];
 			
-			memset( out_left, 0, sizeof(double)*(frames*0.5) );
+			memset( out_left, 0, sizeof(double)*(frames*0.5) ); // CLEAR AUDIO BUFFERS FOR NEXT FRAME
 			memset( out_right, 0, sizeof(double)*(frames*0.5) );
+		
+			new_chorus.length = frames;
 		
 			
 			if (fParameters[TRICERATOPS_FX_ECHO_ACTIVE])
@@ -1033,17 +1062,41 @@ class triceratopsPlugin : public Plugin
 					out_right[x] = echo->do_right( out_right[x] );
 				}
 				
-				if (fParameters[TRICERATOPS_FX_REVERB_ACTIVE] == 1)
-				{
+				if (fParameters[TRICERATOPS_FX_REVERB_ACTIVE] == 1)	// REVERB TYPE 1 (ORIGINAL TRICERATOPS BRIGHT BUT RINGY)
+				{							// ALSO THE OUTPUT IS STEREO BUT ORIGINAL STEREO INPUT IS LOST	
 					int reverb_decay = fParameters[TRICERATOPS_FX_REVERB_DECAY];
+					if (reverb_decay > 15) reverb_decay = 15;
 					reverb[reverb_decay]->setEffectMix( fParameters[TRICERATOPS_FX_REVERB_MIX] );
 					reverb[reverb_decay]->tick(((out_left[x]+out_right[x]) * 0.2));
 					out_left[x] += reverb[reverb_decay]->lastOutputL();
 					out_right[x] += reverb[reverb_decay]->lastOutputR();
 				}
-							
+				
+				if ( fParameters[TRICERATOPS_FX_CHORUS_ACTIVE] == 1 )
+				{
+					float* chorus_out = new_chorus.run(out_left[x], out_right[x] );
+					out_left[x] = chorus_out[0];
+					out_right[x] = chorus_out[1];
+				}	
+				
+				if ( fParameters[TRICERATOPS_FX_CHORUS_ACTIVE] == 2 )
+				{
+					float* chorus_out = new_chorus.run(out_left[x], out_right[x] );
+					out_left[x] = chorus_out[0];
+					out_right[x] = chorus_out[1];
+
+					chorus_out = new_chorus2.run(out_left[x], out_right[x] );
+					out_left[x] = chorus_out[0];
+					out_right[x] = chorus_out[1];
+				}						
 
 
+			}
+			if ( fParameters[TRICERATOPS_FX_REVERB_ACTIVE] == 2)	// REVERB TYPE 2 (SMOOTHER MORE CANVERNOUS BUT NOT SO BRIGHT, TRUE STEREO
+			{							// BOTH IN AND OUT)
+				verb.setDecay( fParameters[TRICERATOPS_FX_REVERB_DECAY] / 2.0f );
+				verb.setMix( fParameters[TRICERATOPS_FX_REVERB_MIX]); 
+				verb.process(out_left, out_right, frames);
 			}
 			
 		}
@@ -1070,6 +1123,7 @@ Plugin* createPlugin()
 	// cout << TRICERATOPS_MIDI_CHANNEL << endl;
 
 	triceratopsPlugin* triceratops = new triceratopsPlugin();
+
 	for (int x=0; x<max_notes; x++)
 	{
 		triceratops->synths[x].synth_params->TRICERATOPS_MASTER_VOLUME = &triceratops->fParameters[TRICERATOPS_MASTER_VOLUME];
@@ -1206,6 +1260,8 @@ Plugin* createPlugin()
 		triceratops->synths[x].synth_params->TRICERATOPS_CATEGORY = &triceratops->fParameters[TRICERATOPS_PRESET_CATEGORY];
 		triceratops->synths[x].synth_params->TRICERATOPS_PITCH_BEND_RANGE = &triceratops->fParameters[TRICERATOPS_PITCH_BEND_RANGE];
 		triceratops->synths[x].synth_params->TRICERATOPS_MIDI_CHANNEL = &triceratops->fParameters[TRICERATOPS_MIDI_CHANNEL];
+		
+		triceratops->synths[x].synth_params->TRICERATOPS_FX_CHORUS_ACTIVE = &triceratops->fParameters[TRICERATOPS_FX_CHORUS_ACTIVE];
 
 	}
 	return triceratops;

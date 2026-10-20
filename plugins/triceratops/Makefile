@@ -15,6 +15,7 @@ FILES_DSP = \
 	Reverb.cpp \
 	Object.cpp \
 	JCRev.cpp \
+	chorus.cpp \
 	Filter.cpp \
 	eq.cpp \
 	DLineN.cpp \

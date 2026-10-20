@@ -165,6 +165,9 @@ typedef struct
 	float* TRICERATOPS_LFO2_ONESHOT;
 	float* TRICERATOPS_LFO3_ONESHOT;
 	
+	float* TRICERATOPS_DSP_RUN;
+	float* TRICERATOPS_FX_CHORUS_ACTIVE;
+	
 } params;
 
 ///------------ oscillator  structs

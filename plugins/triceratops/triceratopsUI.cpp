@@ -758,23 +758,35 @@ class triceratopsUI : public UI
 			
 			// REVERB
 	
-			int widget_fx_reverb_active = Delirium_UI_Create_Widget(GUI, deliriumUI_Switch, 0, panelX + 13, panelY + 1.25, 2, 2, "REVERB", TRICERATOPS_FX_REVERB_ACTIVE);
+			int widget_fx_reverb_active = Delirium_UI_Create_Widget(GUI, deliriumUI_Knob, 0, panelX + 13, panelY + 1.25, 2, 2.5, "REVERB", TRICERATOPS_FX_REVERB_ACTIVE);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_fx_reverb_active, "general", "fx");
-			fParameters_widget_number[TRICERATOPS_FX_REVERB_ACTIVE] = widget_fx_reverb_active;	
+			fParameters_widget_number[TRICERATOPS_FX_REVERB_ACTIVE] = widget_fx_reverb_active;
+			Delirium_UI_Widget_Set_Integer(GUI, widget_fx_reverb_active, true);	
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_reverb_active, 0,2);
+			Delirium_UI_Widget_Set_Value(GUI, widget_fx_reverb_active, 0);
+			Delirium_UI_Widget_Set_Increment(GUI, widget_fx_reverb_active, 1);
 			
 			int widget_fx_reverb_decay = Delirium_UI_Create_Widget(GUI, deliriumUI_Fader, 0, panelX + 15.5, panelY + 1.25, 1, 5.25, "DECAY", TRICERATOPS_FX_REVERB_DECAY);
-			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_reverb_decay, 0,15);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_reverb_decay, 0,30);
 			Delirium_UI_Widget_Set_Value(GUI, widget_fx_reverb_decay, 4);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_fx_reverb_decay, "general", "fx");
 			fParameters_widget_number[TRICERATOPS_FX_REVERB_DECAY] = widget_fx_reverb_decay;			
 			
 			int widget_fx_reverb_mix = Delirium_UI_Create_Widget(GUI, deliriumUI_Fader, 0, panelX + 17.5, panelY + 1.25, 1, 5.25, "MIX", TRICERATOPS_FX_REVERB_MIX);
-			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_reverb_mix, 0,0.8);
-			Delirium_UI_Widget_Set_Value(GUI, widget_fx_reverb_mix, 0);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_reverb_mix, 0,1);
+			Delirium_UI_Widget_Set_Value(GUI, widget_fx_reverb_mix, 0.5);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_fx_reverb_mix, "general", "fx");
 			fParameters_widget_number[TRICERATOPS_FX_REVERB_MIX] = widget_fx_reverb_mix;	
 
-			
+			// CHORUS
+	
+			int widget_fx_chorus_active = Delirium_UI_Create_Widget(GUI, deliriumUI_Knob, 0, panelX + 13, panelY + 4, 2, 2.5, "CHORUS", TRICERATOPS_FX_CHORUS_ACTIVE);
+			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_fx_chorus_active, "general", "fx");
+			fParameters_widget_number[TRICERATOPS_FX_CHORUS_ACTIVE] = widget_fx_chorus_active;
+			Delirium_UI_Widget_Set_Integer(GUI, widget_fx_chorus_active, true);	
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_chorus_active, 0,2);
+			Delirium_UI_Widget_Set_Value(GUI, widget_fx_chorus_active, 0);
+			Delirium_UI_Widget_Set_Increment(GUI, widget_fx_chorus_active, 1);
 
 			//------- MOD PANEL
 
@@ -1186,6 +1198,9 @@ class triceratopsUI : public UI
 			double preset_value;
 
 			parameterChanged(TRICERATOPS_DSP_RUN, false);
+			
+			parameterChanged(TRICERATOPS_FX_REVERB_ACTIVE,0);
+			parameterChanged(TRICERATOPS_FX_CHORUS_ACTIVE,0);
 			
 			while (getline(preset_file,line))  
 			{
