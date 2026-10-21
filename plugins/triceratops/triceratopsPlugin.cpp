@@ -15,9 +15,11 @@
 #include "chorus.hpp"
 #include "eq.h"
 #include "SmoothVerb.h"
+#include "SurfSpringReverb.h"
 
 
 using namespace std;
+using namespace Surf;
 
 const int max_notes = 18;
 
@@ -52,6 +54,7 @@ class triceratopsPlugin : public Plugin
 		JCRev* reverb[16];
 		
 		SmoothVerb verb;
+		SpringReverb spring;
 		chorus new_chorus;
 		chorus new_chorus2;
 
@@ -138,6 +141,10 @@ class triceratopsPlugin : public Plugin
 			
 			
 			verb.prepare(srate);
+			
+			spring.prepare(srate);
+			spring.setDwell(0.6f); spring.setDecay(0.6f); spring.setDrip(0.7f);
+			spring.setTone(0.6f);  spring.setSplash(0.4f); spring.setMix(0.35f);
 			
 			new_chorus2.frequency_one_inc = 0.0000005;
 			new_chorus2.frequency_two_inc = 0.0000001;
@@ -686,6 +693,16 @@ class triceratopsPlugin : public Plugin
 			memset( out_left, 0, sizeof(double)*(frames*0.5) ); // CLEAR AUDIO BUFFERS FOR NEXT FRAME
 			memset( out_right, 0, sizeof(double)*(frames*0.5) );
 		
+			if (fParameters[TRICERATOPS_FX_REVERB_ACTIVE]  == 3)
+			{
+				spring.setDecay( fParameters[TRICERATOPS_FX_REVERB_DECAY] / 6.0f);
+				cout << fParameters[TRICERATOPS_FX_REVERB_DECAY] / 6.0f << endl;
+				spring.setMix( fParameters[TRICERATOPS_FX_REVERB_MIX] );
+				spring.setDrip( fParameters[TRICERATOPS_FX_ECHO_EQ_LOW] / 2.0f );
+				spring.setSplash(  fParameters[TRICERATOPS_FX_ECHO_EQ_MID] / 2.0f );
+				spring.setDwell( fParameters[TRICERATOPS_FX_ECHO_EQ_HIGH] / 2.0f );
+			}
+				
 			new_chorus.length = frames;
 		
 			
@@ -1072,11 +1089,16 @@ class triceratopsPlugin : public Plugin
 					out_right[x] += reverb[reverb_decay]->lastOutputR();
 				}
 				
+				if (fParameters[TRICERATOPS_FX_REVERB_ACTIVE]  == 3)
+				{
+					spring.process( out_left[x], out_right[x], out_left[x], out_right[x] );					
+				}
+								
 				if ( fParameters[TRICERATOPS_FX_CHORUS_ACTIVE] == 1 )
 				{
 					float* chorus_out = new_chorus.run(out_left[x], out_right[x] );
-					out_left[x] = chorus_out[0];
-					out_right[x] = chorus_out[1];
+					out_left[x] = chorus_out[0] * 1.5;
+					out_right[x] = chorus_out[1] * 1.5;
 				}	
 				
 				if ( fParameters[TRICERATOPS_FX_CHORUS_ACTIVE] == 2 )
@@ -1086,9 +1108,10 @@ class triceratopsPlugin : public Plugin
 					out_right[x] = chorus_out[1];
 
 					chorus_out = new_chorus2.run(out_left[x], out_right[x] );
-					out_left[x] = chorus_out[0];
-					out_right[x] = chorus_out[1];
-				}						
+					out_left[x] = chorus_out[1] * 2;
+					out_right[x] = chorus_out[0] * 2;
+				}	
+			
 
 
 			}
@@ -1098,6 +1121,7 @@ class triceratopsPlugin : public Plugin
 				verb.setMix( fParameters[TRICERATOPS_FX_REVERB_MIX]); 
 				verb.process(out_left, out_right, frames);
 			}
+			
 			
 		}
 

@@ -857,7 +857,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		}
 		else 
 		{
-			out_1 = (OSC_out * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
+			out_1 = (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
 		}
 
 
@@ -905,6 +905,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				}
 	
 				OSC_out = do_3band(eq_right_1, v);
+				OSC_out *= 0.5;
 			}
 
 			if (synth_params->TRICERATOPS_WAVE_ONE[0]==2) OSC_out = sinewave_osc[3]->tick();
@@ -923,7 +924,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 			}
 			else 
 			{
-				out_1 += (OSC_out * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.75;
+				out_1 += (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_ONE[0]) * 0.5;
 			}
 		}
 	}
@@ -991,24 +992,24 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		{
 			if (synth_params->TRICERATOPS_MODIFIER_RING[0]==1)
 			{
-				out_left_2 = 4*(OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
-				out_right_2 = 4*(OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
+				out_left_2 = (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan) * (out_left_1 * 4);
+				out_right_2 =(OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan * (out_right_1 * 4);
 			}
 			else
 			{
-				out_left_2 = (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
-				out_right_2 = (OSC_out *synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
+				out_left_2 = (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * (1 - OSC2_pan);
+				out_right_2 = (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * OSC2_pan;
 			}
 		}
 		else 
 		{
 			if (synth_params->TRICERATOPS_MODIFIER_RING[0]==1)
 			{
-				out_2 = 4*(OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
+				out_2 = (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_TWO[0]) * (out_1 * 4);
 			}
 			else
 			{
-				out_2 = (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
+				out_2 = (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_TWO[0]);
 			}
 		}
 
@@ -1055,6 +1056,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				}
 	
 				OSC_out = do_3band(eq_right_2, v);
+				OSC_out *= 0.5;
 			}
 
 			if (synth_params->TRICERATOPS_WAVE_TWO[0]==2) OSC_out = sinewave_osc[4]->tick();
@@ -1072,7 +1074,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 			}
 			else 
 			{
-				out_2 += (OSC_out * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
+				out_2 += (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_TWO[0]) * 0.75;
 			}
 		}
 	}
@@ -1153,11 +1155,11 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 		{
 			if (synth_params->TRICERATOPS_FM[0] == 1)
 			{
-				out_fm = (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
+				out_fm = (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
 			} 
 			if (synth_params->TRICERATOPS_FM[0] == 0)
 			{
-				out_3 =  (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
+				out_3 =  (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
 			}
 		}
 
@@ -1204,6 +1206,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 				}
 	
 				OSC_out += do_3band(eq_right_3, v);
+				OSC_out *= 0.5;
 			}
 
 			if (synth_params->TRICERATOPS_WAVE_THREE[0]==2) OSC_out = sinewave_osc[5]->tick();
@@ -1230,11 +1233,11 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 			{
 				if (synth_params->TRICERATOPS_FM[0] == 1)
 				{
-					out_fm = (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
+					out_fm = (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_THREE[0] * 16) * env_filter_level;
 				} 
 				if (synth_params->TRICERATOPS_FM[0] == 0)
 				{
-					out_3 +=  (OSC_out * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
+					out_3 +=  (OSC_out * 0.5 * synth_params->TRICERATOPS_VOLUME_THREE[0]) * 0.75;
 				}
 			}
 		}
@@ -1339,7 +1342,7 @@ void synth::run(float* out_left, float* out_right, uint32_t n_samples)
 
 			if (synth_params->TRICERATOPS_MODIFIER_STEREO_MODE[0] == 0)
 			{	
-				in = (out * 0.8);
+				in = (out * 0.5);
 			}
 			else 
 			{

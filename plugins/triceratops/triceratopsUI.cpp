@@ -762,7 +762,7 @@ class triceratopsUI : public UI
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_fx_reverb_active, "general", "fx");
 			fParameters_widget_number[TRICERATOPS_FX_REVERB_ACTIVE] = widget_fx_reverb_active;
 			Delirium_UI_Widget_Set_Integer(GUI, widget_fx_reverb_active, true);	
-			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_reverb_active, 0,2);
+			Delirium_UI_Widget_Set_Min_Max(GUI, widget_fx_reverb_active, 0,3);
 			Delirium_UI_Widget_Set_Value(GUI, widget_fx_reverb_active, 0);
 			Delirium_UI_Widget_Set_Increment(GUI, widget_fx_reverb_active, 1);
 			

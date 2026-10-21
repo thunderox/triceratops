@@ -68,6 +68,7 @@ else
 TARGETS += lv2_dsp
 endif
 
+TARGETS += vst3
 TARGETS += vst
 TARGETS += dssi
 

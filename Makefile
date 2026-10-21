@@ -57,6 +57,7 @@ install:
 	cp $(CURDIR)/bin/triceratops-dssi /usr/lib/dssi -r
 	cp $(CURDIR)/bin/triceratops-dssi.so /usr/lib/dssi
 	cp $(CURDIR)/bin/triceratops-vst.so /usr/lib/vst
+	cp $(CURDIR)/bin/triceratops.vst3 /usr/lib/vst3 -r
 	chmod +x $(CURDIR)/bin/triceratops
 	cp $(CURDIR)/bin/triceratops /usr/bin
 
@@ -68,6 +69,7 @@ uninstall:
 	rm /usr/lib/dssi/triceratops.dssi -rf
 	rm /usr/lib/dssi/triceratops-dssi.so -f
 	rm /usr/lib/vst/triceratops-vst.so -f
+	rm /usr/lib/vst3/triceratops.vst3 -rf
 	rm /usr/bin/triceratops
 
 
