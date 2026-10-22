@@ -83,6 +83,7 @@ class Delirium_UI_Widget_Base
 	int parameter_number;
 	int type;
 	bool inverted;
+	int list_display_number = 5;
 
 	double normalised_values[4];
 	double min;

@@ -15,6 +15,9 @@
 
 #define DISTRHO_UI_URI DISTRHO_PLUGIN_URI "#UI"
 
+#define DISTRHO_PLUGIN_CLAP_ID "thunderox.triceratops"
+#define DISTRHO_PLUGIN_CLAP_FEATURES "instrument", "synthesizer", "stereo"
+
 enum Parameters {
 	TRICERATOPS_MASTER_VOLUME,
 	TRICERATOPS_MASTER_TUNE,

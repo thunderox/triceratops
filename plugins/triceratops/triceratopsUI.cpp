@@ -859,14 +859,22 @@ class triceratopsUI : public UI
 			
 			// PRESETS
 
-			widget_categories_list = Delirium_UI_Create_Widget(GUI, deliriumUI_List, 0, panelX + 0.5,panelY + 1.25, 7,5, "CATEGORIES", -1);
+			widget_categories_list = Delirium_UI_Create_Widget(GUI, deliriumUI_List, 0, panelX + 0.5,panelY + 1.25, 7,5.25, "CATEGORIES", -1);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_categories_list, "general", "presets");
+			GUI->Widgets[widget_categories_list]->list_display_number = 7;
 					
-			widget_presets_list = Delirium_UI_Create_Widget(GUI, deliriumUI_List, 0, panelX + 8.5,panelY + 1.25, 10, 5, "PRESETS", -1);
+			widget_presets_list = Delirium_UI_Create_Widget(GUI, deliriumUI_List, 0, panelX + 8.5,panelY + 1.25, 10, 4.25, "PRESETS", -1);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_presets_list, "general", "presets");
+			
+			widget_current_preset = Delirium_UI_Create_Widget(GUI, deliriumUI_Label, 0, panelX + 8.5,panelY + 5.75, 10, 0.75, "", -1);
+			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_current_preset, "general", "presets");
 								
 			loadSymbols();
-			searchPresets();
+			string local_path = getenv("HOME");
+			string preset_paths = "/usr/lib/lv2";
+			if (local_path != "") preset_paths += ":" + local_path + "/.lv2";
+			
+			searchPresets( preset_paths );	
 					
 			
 			//-----------------------------
@@ -971,9 +979,11 @@ class triceratopsUI : public UI
 		
 		//------------------------------------------------------------------------------------------------------
 		
-		void searchPresets()
-		{
-			string lv2_path = "/usr/lib/lv2"; // getenv("LV2_PATH");			
+		void searchPresets(string lv2_path)
+		{			
+			categories.clear();
+			GUI->Widgets[widget_categories_list]->list_items.clear();
+			
 			stringstream ss;
 			struct dirent *d, *pr_d;
 			struct stat st;
@@ -1053,19 +1063,19 @@ class triceratopsUI : public UI
 												
 												for (int x=0; x<categories.size(); x++)
 												{
-													if (categories[x].name == category_name)
+													if (categories[x].name == category_name && new_preset.name != "manifest")
 													{
 														categories[x].presets.push_back(new_preset);
 														category_found = true;
 													}
 												}
 												
-												if (!category_found)
+												if (!category_found && new_preset.name != "manifest")
 												{
 													category new_category;
 													new_category.name = category_name;
 													new_category.presets.push_back(new_preset);			
-													categories.push_back(new_category);																																					
+													categories.push_back(new_category);																																		
 												}
 												
 											}	
@@ -1118,14 +1128,14 @@ class triceratopsUI : public UI
 									
 									for (int x=0; x<categories.size(); x++)
 									{
-										if (categories[x].name == category_name)
+										if (categories[x].name == category_name && new_preset.name != "manifest")
 										{
 											categories[x].presets.push_back(new_preset);
 											category_found = true;
 										}
 									}
 									
-									if (!category_found)
+									if (!category_found && new_preset.name != "manifest")
 									{
 										category new_category;
 										new_category.name = category_name;
@@ -1173,8 +1183,8 @@ class triceratopsUI : public UI
 		
 		//--------------------------------------------------------------------------------------
 		// LOAD PRESET
-
-		void loadPreset()
+	
+		void load_preset()
 		{ 	
 			int category_number = current_category;
 
@@ -1184,6 +1194,8 @@ class triceratopsUI : public UI
 			if ( preset_number > categories[category_number].presets.size()-1
 				|| category_number > categories.size()-1
 				|| categories[category_number].presets.size() == 0) return;
+						
+			GUI->Widgets[widget_current_preset]->label = categories[category_number].presets[preset_number].name;
 				
 			string preset_path_and_file_name = categories[category_number].presets[preset_number].file;			
 
@@ -1230,6 +1242,106 @@ class triceratopsUI : public UI
 			parameterChanged(TRICERATOPS_DSP_RUN, true);
 
 		}
+		
+		int dirExists(const char *path)
+		{
+		    struct stat info;
+
+		    if(stat( path, &info ) != 0)
+			return 0;
+		    else if(info.st_mode & S_IFDIR)
+			return 1;
+		    else
+			return 0;
+		}
+		
+		//--------------------------------------------------------------------------------------
+		// SAVE PRESET
+	
+		void save_preset()
+		{
+			string local_path = getenv("HOME");
+			if (local_path != "")
+			{
+				string local_lv2_path = local_path + "/.lv2/triceratops.lv2";
+				if ( !dirExists(local_lv2_path.c_str()) )
+				{
+					int res = mkdir (local_lv2_path.c_str(),  0777); // IF TRICERATOPS LOCAL LV2 dir doesn't exist create it
+				}
+				
+				string preset_lv2_path = local_lv2_path + "/triceratops_presets.lv2";
+				if ( !dirExists(preset_lv2_path.c_str()) )
+				{
+					int res = mkdir (preset_lv2_path.c_str(),  0777); // IF TRICERATOPS LOCAL PRESET dir doesn't exist create it
+				}
+				
+				string preset_file_path = preset_lv2_path + "/" + GUI->Widgets[widget_current_preset]->label+".preset.lv2";
+				if ( !dirExists(preset_file_path.c_str()) )
+				{
+					int res = mkdir (preset_file_path.c_str(),  0777); 
+				}
+				
+				string preset_file_name = preset_file_path + "/" + GUI->Widgets[widget_current_preset]->label + ".lv2";
+				// Create and open a text file
+  				ofstream preset_file(preset_file_name);              
+  				
+				preset_file << "@prefix atom: <http://lv2plug.in/ns/ext/atom#> ." << endl;
+				preset_file << "@prefix lv2: <http://lv2plug.in/ns/lv2core#> ." << endl;
+				preset_file << "@prefix pset: <http://lv2plug.in/ns/ext/presets#> ." << endl;
+				preset_file << "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ." << endl;
+				preset_file << "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> ." << endl;
+				preset_file << "@prefix state: <http://lv2plug.in/ns/ext/state#> ." << endl;
+				preset_file << "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> ." << endl;
+				
+				preset_file << endl << "<>" << endl;
+				preset_file << "\ta pset:Preset ;" << endl;
+				preset_file << "\tlv2:appliesTo <http://thunderox.com/triceratops> ;" << endl;
+				
+				if (current_category > -1)
+				{
+					string category_name = categories[current_category].name;
+					preset_file << 	"\tpset:bank <" + category_name + "> ;"  << endl;
+				}
+				
+				preset_file << "\trdfs:label \"" + GUI->Widgets[widget_current_preset]->label + "\" ;" << endl;
+				preset_file << "\tlv2:port" << endl;
+				
+				for (int s=3; s<symbols.size(); s++)
+				{
+					if (symbols[s] != "")
+					{
+						preset_file << "\t[" << endl;
+						preset_file << "\t\tlv2:symbol \"" << symbols[s] + "\" ;" << endl;
+						preset_file << "\t\tpset:value " << fParameters[s-3] << endl;
+						if (symbols[s+1] != "") preset_file << "\t]," << endl << endl;
+						else preset_file << "\t] ." << endl << endl;
+					}
+				}
+  				
+  				preset_file.close();
+				string local_path = getenv("HOME");
+				string preset_paths = "/usr/lib/lv2";
+				if (local_path != "") preset_paths += ":" + local_path + "/.lv2";
+				searchPresets( preset_paths );	
+			
+				int category_number = GUI->Widgets[widget_categories_list]->list_position
+					+ GUI->Widgets[widget_categories_list]->list_scroll;
+			
+				GUI->Widgets[widget_presets_list]->list_items.clear();
+				GUI->Widgets[widget_presets_list]->list_scroll = 0;
+				current_category = category_number;
+				
+				GUI->Widgets[widget_presets_list]->label = "PRESETS: " + categories[category_number].name;
+
+				for (int pr=0; pr<categories[category_number].presets.size(); pr++)
+				{			
+					Delirium_UI_Widget_List_Add_Item(GUI, widget_presets_list, categories[category_number].presets[pr].name);
+				}
+				
+				repaint();
+  				
+			}
+		}
 
 		//------------------------------------------------------------------------------------------------------
 		string Find_Preset_Category(string file_name)
@@ -1253,7 +1365,6 @@ class triceratopsUI : public UI
 					int start_index = line.rfind("<");
 					int end_index = line.rfind(">") - start_index - 1;
 					category_name =  line.substr(start_index+1, end_index);
-					// cout << category_name << endl;
 					
 
 				} 
@@ -1289,9 +1400,41 @@ class triceratopsUI : public UI
 		}
 		
 		//------------------------------------------------------------------------------------------------------
+		
+		bool onKeyboard ( const KeyboardEvent& ev ) override
+		{
+			if (ev.press && GUI->current_widget == widget_current_preset)
+			{
+				if (ev.key == DGL_NAMESPACE::kKeyBackspace)
+				{
+					if (GUI->Widgets[widget_current_preset]->label.size() > 0)
+					{
+						GUI->Widgets[widget_current_preset]->label.pop_back();
+						repaint();
+					}
+				}
+				
+				else if (ev.key != 0 )
+				{	
+					char ch = ev.key;
+					int ucase = 0;
+					if (ch == kKeyShiftL || ch == kKeyShiftR) { cout << "SHIFT" << endl; }
+					if (ch == kKeySpace) ch = '_';
+					if (ch == kKeyEnter) { save_preset(); return true; } // This will save the patch
+					if (ev.keycode > 65) return true;
+					GUI->Widgets[widget_current_preset]->label += char(ch + ucase);
+					GUI->Widgets[widget_current_preset]->Draw(cr);
+					repaint();
+				}
+			}
+			return true;
+		}
+		
+		//------------------------------------------------------------------------------------------------------
 
 		bool onMouse(const MouseEvent& ev) override
 		{
+		
 		
 			if (ev.button == 1 && !ev.press)
 			{
@@ -1315,6 +1458,8 @@ class triceratopsUI : public UI
 					GUI->Widgets[widget_presets_list]->list_items.clear();
 					GUI->Widgets[widget_presets_list]->list_scroll = 0;
 					current_category = category_number;
+					
+					GUI->Widgets[widget_presets_list]->label = "PRESETS: " + categories[category_number].name;
 
 					for (int pr=0; pr<categories[category_number].presets.size(); pr++)
 					{			
@@ -1325,7 +1470,7 @@ class triceratopsUI : public UI
 				
 				if ( GUI->current_widget == widget_presets_list )
 				{
-					loadPreset();
+					load_preset();
 				}
 				
 				if (parameter_number > -1)
@@ -1592,7 +1737,8 @@ class triceratopsUI : public UI
 		
 		int widget_categories_list;
 		int widget_presets_list;
-		int current_category = 0;
+		int widget_current_preset;
+		int current_category = -1;
 
 
 		struct alphasort_category

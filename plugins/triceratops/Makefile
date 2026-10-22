@@ -43,34 +43,11 @@ FILES_UI  = \
 # Do some magic
 
 UI_TYPE = cairo
-include ../../dpf/Makefile.plugins.mk
+include ../../DPF/Makefile.plugins.mk
 
-# --------------------------------------------------------------
-# Enable all possible plugin types
 
-ifeq ($(HAVE_JACK),true)
-ifeq ($(HAVE_CAIRO),true)
-TARGETS += jack
-endif
-endif
 
-ifneq ($(MACOS_OR_WINDOWS),true)
-ifeq ($(HAVE_CAIRO),true)
-ifeq ($(HAVE_LIBLO),true)
-TARGETS += dssi
-endif
-endif
-endif
-
-ifeq ($(HAVE_CAIRO),true)
-TARGETS += lv2_sep
-else
-TARGETS += lv2_dsp
-endif
-
-TARGETS += vst3
-TARGETS += vst
-TARGETS += dssi
+TARGETS = clap dssi jack lv2_sep vst2 vst3
 
 all: $(TARGETS)
 

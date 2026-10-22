@@ -2,8 +2,6 @@
 
 #include "delirium_ui.hpp"
 
-const int list_display_number = 8;
-
 //-------------------------------------------------------------------------------------------
 
 void Delirium_UI_Widget_List::Draw(cairo_t* cr) 
