@@ -1260,6 +1260,10 @@ class triceratopsUI : public UI
 	
 		void save_preset()
 		{
+			string txt = GUI->Widgets[widget_current_preset]->label;
+			txt[0] = toupper(txt[0]);
+			GUI->Widgets[widget_current_preset]->label = txt;
+			
 			string local_path = getenv("HOME");
 			if (local_path != "")
 			{
@@ -1478,6 +1482,7 @@ class triceratopsUI : public UI
 				
 					float value = Delirium_UI_Widget_Get_Value(GUI);
 					setParameterValue(parameter_number, value);
+					fParameters[parameter_number] = value;
 			
 					
 					if (Delirium_UI_Widget_Get_Type(GUI) == deliriumUI_Fader_Route)
@@ -1527,6 +1532,7 @@ class triceratopsUI : public UI
 				{
 	
 					setParameterValue(parameter_number, 0);
+					fParameters[parameter_number] = 0;
 					Delirium_UI_Middle_Button_Press(GUI);	
 					repaint();	
 					
@@ -1568,6 +1574,7 @@ class triceratopsUI : public UI
 			{	
 				float value = Delirium_UI_Widget_Get_Value(GUI);
 				setParameterValue(parameter_number, value);
+				fParameters[parameter_number] = value;
 				
 				if (Delirium_UI_Widget_Get_Type(GUI) == deliriumUI_Fader_Route)
 				{
