@@ -16,6 +16,8 @@ using namespace std;
 
 START_NAMESPACE_DISTRHO
 
+bool gui_opened = true;
+
 class triceratopsUI : public UI
 {
 	public:
@@ -24,11 +26,12 @@ class triceratopsUI : public UI
 
 		triceratopsUI() : UI(980, 460)
 		{
-
+			
 			memset(fParameters, 0, sizeof(float)*kParameterCount);
 			memset(fParameters_widget_number, -1, sizeof(int)*kParameterCount);
 
 			GUI = Delirium_UI_Init(static_cast<float>(getWidth()),static_cast<float>(getHeight()), 38,30);
+			
 			
 			// OSCILATOR PANEL
 			
@@ -140,8 +143,6 @@ class triceratopsUI : public UI
 			Delirium_UI_Widget_Set_Default_Value(GUI, widget_osc1_pulsewidth, 0);
 			Delirium_UI_Widget_Set_Group_And_Member(GUI, widget_osc1_pulsewidth, "oscillators", "osc1");
 			fParameters_widget_number[TRICERATOPS_OSC1_PULSEWIDTH] = widget_osc1_pulsewidth; 
-			
-			
 			
 			// OSCILATOR TWO ------------------------------------------------------------------------------------------
 
@@ -912,6 +913,7 @@ class triceratopsUI : public UI
 		//------------------------------------------------------------------------------------------------------
 		void loadSymbols()
 		{
+		
 			string line;
 
 			string lv2_path = "/usr/lib/lv2"; // getenv("LV2_PATH");				
@@ -1230,6 +1232,7 @@ class triceratopsUI : public UI
 					if (symbol_index > -1) 
 					{						 
 						parameterChanged(symbol_index, preset_value); 
+						setParameterValue(symbol_index, preset_value);
 					}
 
 				} 
@@ -1385,7 +1388,9 @@ class triceratopsUI : public UI
 
 		 void onCairoDisplay(const CairoGraphicsContext& context)
 		{
+			
 			cr = context.handle;
+			cr_was_set = true;
 
 			int widget_filter_type = fParameters_widget_number[TRICERATOPS_FILTER_MODE];
 			int widget_filter_cutoff = fParameters_widget_number[TRICERATOPS_FILTER_FREQUENCY];
@@ -1661,7 +1666,7 @@ class triceratopsUI : public UI
 		void programLoaded(uint32_t index) override
 		{
 			GUI->draw_flag = true;
-			Delirium_UI_Display_All(GUI, cr);
+			if (cr_was_set) Delirium_UI_Display_All(GUI, cr);
 		}
 		
 		
@@ -1702,7 +1707,7 @@ class triceratopsUI : public UI
 			// trigger repaint
 
 			fParameters[index] = value;
-			setParameterValue(index, value);
+			//setParameterValue(index, value);
 			
 			GUI->draw_flag = true;		
 			repaint();
@@ -1715,10 +1720,12 @@ class triceratopsUI : public UI
 		Delirium_UI_Surface* GUI;
 		cairo_t* cr;
 		float fParameters[kParameterCount+3];
+		float fParameters_defauls[kParameterCount+3];
 		int fParameters_widget_number[kParameterCount+3];
 		
 		vector <string> symbols;
 		int number_of_symbols;
+		bool cr_was_set = false;
 		
 		struct preset
 		{

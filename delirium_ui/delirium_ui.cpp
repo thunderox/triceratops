@@ -254,7 +254,6 @@ void Delirium_UI_Widget_Set_Min_Max(Delirium_UI_Surface* GUI, int widget_number,
 
 void Delirium_UI_Display_All(Delirium_UI_Surface* GUI, cairo_t* cr)
 {
-	
 	cairo_t *cr_all_widgets = cairo_create (GUI->all_widgets);
 
 	if (GUI->draw_flag)
@@ -270,7 +269,7 @@ void Delirium_UI_Display_All(Delirium_UI_Surface* GUI, cairo_t* cr)
 			
 			if (widget_visible) GUI->Widgets[x]->Draw(cr_all_widgets);
 		}
-		
+						
 		cairo_set_source_surface (cr, GUI->all_widgets, 0, 0);
 		cairo_paint(cr);
 	}	
